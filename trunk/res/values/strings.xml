@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World!</string>
-    <string name="app_name">AndroChat</string>
+    <string name="app_name">Andro Chat</string>
+<string name="app_desc">This is the progrem we should develop for Graduation.</string>
 </resources>
