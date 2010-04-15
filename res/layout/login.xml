@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"><TableLayout android:id="@+id/TableLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><TableRow android:id="@+id/TableRow01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="right|center_vertical" android:minHeight="20px">
+</TableRow>
+
+<TableRow android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/TitleRow" android:gravity="center_horizontal"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtMain" android:text="AndroChat" android:textStyle="bold" android:textSize="25px"></TextView>
+</TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/TimeInterval"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time Interval:" android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/lblIntervalTime"></TextView>
+
+<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtInterval" android:minWidth="150px" android:maxWidth="150px"></EditText>
+</TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
+
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/UserName"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="20px" android:paddingRight="20px" android:text="User Name:" android:id="@+id/lblUserName"></TextView>
+
+<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="150px" android:maxWidth="150px" android:id="@+id/txtUserName"></EditText>
+</TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
+
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/Password"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/lblPassword" android:text="Password:"></TextView>
+
+<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="150px" android:maxWidth="150px" android:id="@+id/txtPassWord"></EditText>
+</TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space"></TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/lblNotify" android:text="Notify with:" android:paddingLeft="20px" android:textStyle="bold"></TextView>
+</TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify2" android:gravity="center" android:paddingLeft="20px"><CheckBox android:layout_height="wrap_content" android:id="@+id/chkSound" android:text="Sound" android:layout_width="wrap_content"></CheckBox>
+<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chkVibaration" android:text="Vibration"></CheckBox>
+
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/space" android:minHeight="20px"></TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Login" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnLogin" android:text="Log In"></Button>
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnLogOut" android:text="Log Out"></Button>
+</TableRow>
+
+</TableLayout>
+
+</LinearLayout>
