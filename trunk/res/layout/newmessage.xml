@@ -18,24 +18,23 @@
 							android:gravity="center">
 							<EditText 	android:layout_width="wrap_content" 
 										android:layout_height="wrap_content" 
-										android:id="@+id/AddresseeName" 
+										android:id="@+id/txtAddresseeName" 
 										android:height="50px" 
 										android:maxHeight="50px" 
 										android:maxLines="1" 
 										android:width="200px">
 							</EditText>
-							<Button 	android:layout_width="wrap_content" 
-										android:layout_height="wrap_content" 
-										android:id="@+id/AddContact" 
-										android:text="Add Contact" 
-										android:singleLine="false"></Button>
 				</TableRow>
 				
 				<TableRow 	android:id="@+id/TableRow03" 
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content" 
 							android:minHeight="50px">
-				</TableRow>
+							
+							
+				<Button android:layout_width="wrap_content" 
+						android:layout_height="wrap_content" 
+						android:id="@+id/btnAddContact" android:text="Add Contact" android:width="10px"></Button></TableRow>
 				
 				<TableRow 	android:id="@+id/TableRow04" 
 							android:layout_width="wrap_content" 
@@ -44,9 +43,12 @@
 							<EditText 
 										android:layout_width="wrap_content" 
 										android:layout_height="wrap_content" 
-										android:id="@+id/MessageBody" 
-										android:width="300px" android:height="100px">
+										android:id="@+id/txtMessageBody" 
+										android:width="250px" android:height="100px">
 							</EditText>
+							
+							<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnSendMessage" android:text="Send Message" android:width="10px"></Button>
+							
 				</TableRow>
 </TableLayout>
 

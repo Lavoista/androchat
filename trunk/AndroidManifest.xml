@@ -14,9 +14,13 @@
 		                <action android:name="android.intent.action.MAIN" />
 		                <category android:name="android.intent.category.LAUNCHER" />
 		            </intent-filter>
-        </activity>
+        	</activity>
         
-	</application>
+	<activity android:name="NewMessage" android:label="New Message">
+
+</activity>
+<activity android:name="LoginSettings" android:label="Login and Settings screen"></activity>
+</application>
 	    	<uses-sdk android:minSdkVersion="3" />
 
 </manifest> 
