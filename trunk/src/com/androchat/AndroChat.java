@@ -1,6 +1,7 @@
 package com.androchat;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 public class AndroChat extends Activity {
@@ -18,22 +19,22 @@ public class AndroChat extends Activity {
     	//		If No, than set content view as R.layout.login
     	
         super.onCreate(savedInstanceState);
+    	this.setContentView(R.layout.main);
         
         boolean isUserAlreadySignedIn = false;
         
         if ( isUserAlreadySignedIn ){
         	// Open the messageList.
-            //Intent iMessagesList = new Intent(AndroChat.this, MessagesList.class);
-            //startActivity(iMessagesList);
+            Intent iMessagesList = new Intent(AndroChat.this, MessagesList.class);
+            startActivity(iMessagesList);
 
-    		this.setContentView(R.layout.messageslist);
+    		//this.setContentView(R.layout.messageslist);
         }
         else {
         	// Open the login and settings screen.
-            //Intent iLogin = new Intent(AndroChat.this, LoginSettings.class);
-            //startActivity(iLogin);
+            Intent iLogin = new Intent(AndroChat.this, LoginSettings.class);
+            startActivity(iLogin);
             
-    		this.setContentView(R.layout.login);
         	
         }
         

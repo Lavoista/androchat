@@ -2,12 +2,16 @@ package com.androchat;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.provider.MediaStore.Audio;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.app.Notification;
+
 
 public class LoginSettings extends Activity {
 	
@@ -21,7 +25,6 @@ public class LoginSettings extends Activity {
 	private CheckBox chkSound; 
 	private CheckBox chkVibaration;
 	
-	@Override
 	public void onCreate(Bundle savedInstanceState)	{
 		
 		super.onCreate(savedInstanceState);
@@ -35,8 +38,7 @@ public class LoginSettings extends Activity {
         
         // Define events to the btnLogin
         this.btnLogin.setOnClickListener(new OnClickListener() 
-        {
-	          @Override
+        {	 
 	          public void onClick(View v) 
 	          {
 	            Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
@@ -48,25 +50,25 @@ public class LoginSettings extends Activity {
         // Define events to chkSound
         this.chkSound.setOnClickListener(new OnClickListener() 
         {
-	          @Override
 	          public void onClick(View v) 
 	          {
-	        	  if (chkSound.isChecked()) {
-						
-					}
+	        	  if (chkSound.isChecked()) 
+	        	  {
+	        		  Notification soundnotification = new Notification();
+	        		  soundnotification.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
+	        	  }
 	          }
         });
         
         // Define events to chkVibration
         this.chkVibaration.setOnClickListener(new OnClickListener() 
         {
-	          @Override
 	          public void onClick(View v) 
 	          {
-	        	  if (chkVibaration.isChecked()) {
-						((Vibrator) getSystemService(VIBRATOR_SERVICE))
-						.vibrate(VIBRATION_PATTERN, -1);
-					}
+	        	  if (chkVibaration.isChecked()) 
+	        	  {
+
+				  }
 	          }
         });
 	
