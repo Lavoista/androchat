@@ -1,6 +1,7 @@
 package com.androchat;
 
 import android.app.Activity;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,20 +11,22 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.EditText;
 import android.app.Notification;
+import java.lang.*;
 
 
 public class LoginSettings extends Activity {
 	
-	// TODO: Match to the project
-	final static int[] INTERVALS = { 3, 5, 10, 15, 30, 60, 120 };
-	final static int DEFAULT_INTERVAL_INDEX = 4;
-	final static long[] VIBRATION_PATTERN = new long[] { 0, 100, 60, 100 };
 	
 	// Creating controls that need implementation:
-	private Button btnLogin;
+	private Button btnLogIn;
+	private Button btnLogOut;
 	private CheckBox chkSound; 
 	private CheckBox chkVibaration;
+	private EditText txtUserName;
+	private EditText txtPassWord;
+	private EditText txtTimeInterval;
 	
 	public void onCreate(Bundle savedInstanceState)	{
 		
@@ -31,19 +34,28 @@ public class LoginSettings extends Activity {
 		this.setContentView(R.layout.login);
 
         // Get controls from the layout
-        this.btnLogin = (Button)this.findViewById(R.id.btnLogin);
+        this.btnLogIn = (Button)this.findViewById(R.id.btnLogin);
+        this.btnLogOut = (Button)this.findViewById(R.id.btnLogOut);
         this.chkSound = (CheckBox)this.findViewById(R.id.chkSound);
         this.chkVibaration = (CheckBox)this.findViewById(R.id.chkVibaration);
-        
+        this.txtUserName = (EditText)this.findViewById(R.id.txtUserName);
+        this.txtPassWord = (EditText)this.findViewById(R.id.txtPassWord);
+        this.txtTimeInterval = (EditText)this.findViewById(R.id.txtInterval);
         
         // Define events to the btnLogin
-        this.btnLogin.setOnClickListener(new OnClickListener() 
+        this.btnLogIn.setOnClickListener(new OnClickListener() 
         {	 
 	          public void onClick(View v) 
 	          {
+	        	// TODO : DOV - log in to twitter
+	        	String strPassword = txtPassWord.getText().toString();
+	        	String strUserName = txtUserName.getText().toString();
+	        	String strInterval = txtTimeInterval.getText().toString();
+
+	        	// TODO: can not succeed to open new window
+	            finish();
 	            Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
 	            startActivity(iMessagesList);
-	            finish();
 	          }
         });
         
@@ -54,8 +66,8 @@ public class LoginSettings extends Activity {
 	          {
 	        	  if (chkSound.isChecked()) 
 	        	  {
-	        		  Notification soundnotification = new Notification();
-	        		  soundnotification.sound = Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
+	        		  // TODO : OR
+	        		  
 	        	  }
 	          }
         });
@@ -67,8 +79,17 @@ public class LoginSettings extends Activity {
 	          {
 	        	  if (chkVibaration.isChecked()) 
 	        	  {
-
+	        		  // TODO : OR
 				  }
+	          }
+        });
+        
+        // Define events to the btnLogout
+        this.btnLogOut.setOnClickListener(new OnClickListener() 
+        {	 
+	          public void onClick(View v) 
+	          {
+	            // TODO: DOV
 	          }
         });
 	
