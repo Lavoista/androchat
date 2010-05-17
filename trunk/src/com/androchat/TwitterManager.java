@@ -1,7 +1,12 @@
 package com.androchat;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import twitter4j.*;
 
@@ -14,10 +19,15 @@ public class TwitterManager {
 	private int m_Interval;
 	private boolean m_Sound;
 	private boolean m_Vibration;
-	private Date m_LastSync;
+	private long m_nMaxMsgNum;
+	private HashMap<String, ArrayList<DirectMessage>> m_hashMessages;
+	private Timer m_timer;
 	
 	private TwitterManager(){
-	
+		m_hashMessages = new HashMap<String, ArrayList<DirectMessage>>();
+		m_nMaxMsgNum = 1;
+		m_timer = new Timer();
+		m_Interval = 0;
 	}
 	
 	public static TwitterManager getInstance(){
@@ -26,15 +36,33 @@ public class TwitterManager {
 		return m_Instance;
 	}
 	
-	public void Connect(String userName, String passWord){
+	public void Connect(String userName, String passWord, int nInterval) throws TwitterException{
 		m_UserName = userName;
 		m_Password = passWord;
 		m_Twitter = new TwitterFactory().getInstance(m_UserName,m_Password);
-		//TODO: load contacts and messages
+		
+		SyncMessages();
+        setInterval(nInterval);
 	}
 	
-	public void setInterval(int interval){
+	public void Disconnect(){
+		m_timer.cancel();
+	}
 		
+	public void setInterval(int interval){
+		if(m_Interval != 0){
+			m_timer.cancel();
+			m_timer.purge();
+		}
+		m_Interval = interval;
+		m_timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				try{
+					SyncMessages();
+				}
+				catch(TwitterException e){}
+			}
+		}, m_Interval*60000, m_Interval*60000);
 	}
 	
 	public int getInterval(){
@@ -42,7 +70,7 @@ public class TwitterManager {
 	}
 	
 	public void setVibration(boolean vibration) {
-		this.m_Vibration = vibration;
+		m_Vibration = vibration;
 	}
 
 	public boolean isVibration() {
@@ -50,41 +78,66 @@ public class TwitterManager {
 	}
 
 	public void setSound(boolean sound) {
-		this.m_Sound = sound;
+		m_Sound = sound;
 	}
 
 	public boolean isSound() {
 		return m_Sound;
 	}
 
-	public void Disconnect(){
-		
+	public ArrayList<User> GetAllContacts() throws TwitterException{
+		ArrayList<User> arrUsers = new ArrayList<User>();
+		IDs ids = m_Twitter.getFollowersIDs(); 
+        for (int id : ids.getIDs()){
+        	User user = m_Twitter.showUser(id);
+        	arrUsers.add(user);
+        }
+		return arrUsers;
 	}
 	
-	public ArrayList<Contact> GetAllContacts() throws TwitterException{
-		return null;
+	public ArrayList<DirectMessage> GetMessagesForContact(String strUserName) throws TwitterException{
+		if(!m_hashMessages.containsKey(strUserName)){
+			m_hashMessages.put(strUserName, new ArrayList<DirectMessage>());
+		}
+		return m_hashMessages.get(strUserName);
 	}
 	
-	public void AddContact(Contact c) throws TwitterException{
-		
+	public void SendMessage(String strUserName, String strMsg) throws TwitterException{
+		GetMessagesForContact(strUserName).add(m_Twitter.sendDirectMessage(strUserName, strMsg));
 	}
 	
-	public void RemoveContact(Contact c) throws TwitterException{
-		
-	}
-	
-	public ArrayList<DirectMessage> GetMessagesForContact(Contact c) throws TwitterException{
-		return new ArrayList<DirectMessage>();
-	}
-	
-	public void SendMessage(Contact contact, DirectMessage msg) throws TwitterException{
-	
-	}
-	
-	/**
-	 * @return New messages since last Sync
-	 */
-	public ArrayList<DirectMessage> SyncMessages() throws TwitterException{
-		return null;
+	private void SyncMessages() throws TwitterException{
+		Paging page = new Paging();
+		page.setSinceId(m_nMaxMsgNum);
+		page.setCount(200);
+		List<DirectMessage> messages = m_Twitter.getDirectMessages(page);
+        for (DirectMessage message : messages) {
+        	String strSenderScreenName = message.getSenderScreenName();
+        	if(!m_hashMessages.containsKey(strSenderScreenName)){
+        		m_hashMessages.put(strSenderScreenName, new ArrayList<DirectMessage>());
+        	}
+        	if(message.getId() > m_nMaxMsgNum){
+        		m_nMaxMsgNum = message.getId();
+        	}
+        	m_hashMessages.get(strSenderScreenName).add(message);
+        }
+        messages = m_Twitter.getSentDirectMessages(page);
+        for (DirectMessage message : messages) {
+        	String strRecipientScreenName = message.getRecipientScreenName();
+        	if(!m_hashMessages.containsKey(strRecipientScreenName)){
+        		m_hashMessages.put(strRecipientScreenName, new ArrayList<DirectMessage>());
+        	}
+        	if(message.getId() > m_nMaxMsgNum){
+        		m_nMaxMsgNum = message.getId();
+        	}
+        	m_hashMessages.get(strRecipientScreenName).add(message);
+        }
+        for(ArrayList<DirectMessage> arr : m_hashMessages.values()){
+        	Collections.sort(arr, new Comparator<DirectMessage>() {
+				public int compare(DirectMessage object1, DirectMessage object2) {
+					return object1.getCreatedAt().compareTo(object2.getCreatedAt());
+				}
+        	});
+        }
 	}
 }
