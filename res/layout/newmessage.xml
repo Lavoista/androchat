@@ -5,20 +5,30 @@
 <TableLayout 	android:id="@+id/TableLayout01"
 				android:layout_height="wrap_content" 
 				android:layout_width="fill_parent">
+
 				<TableRow 	android:id="@+id/TableRow02" 
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content" 
 							android:gravity="center" 
 							android:minHeight="50px">
-				<TextView android:id="@+id/TextView01" android:layout_width="wrap_content" android:layout_height="wrap_content" android:gravity="center" android:text="New Message" android:textSize="25px"></TextView>
-</TableRow>
+
+							<TextView 	android:id="@+id/TextView01" 
+										android:layout_width="wrap_content" 
+										android:layout_height="wrap_content" 
+										android:gravity="center" 
+										android:text="New Message" 
+										android:textSize="25px"></TextView>
+				</TableRow>
+
 				<TableRow 	android:id="@+id/TableRow01" 
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content" 
 							android:gravity="center">
+
 							<EditText 	android:layout_width="wrap_content" 
 										android:layout_height="wrap_content" 
 										android:id="@+id/txtAddresseeName" 
+										android:gravity="center" 
 										android:height="50px" 
 										android:maxHeight="50px" 
 										android:maxLines="1" 
@@ -29,25 +39,46 @@
 				<TableRow 	android:id="@+id/TableRow03" 
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content" 
-							android:minHeight="50px">
+							android:minHeight="50px"
+							android:gravity="center">
 							
+							<Spinner	android:layout_width="wrap_content" 
+										android:layout_height="wrap_content" 
+										android:id="@+id/spnrAddresseeName" 
+										android:gravity="center" 
+										android:height="50px" 
+										android:width="200px"
+								        android:drawSelectorOnTop="true"
+								        android:prompt="@string/planet_prompt"
+										>
+							</Spinner>
 							
-				<Button android:layout_width="wrap_content" 
-						android:layout_height="wrap_content" 
-						android:id="@+id/btnAddContact" android:text="Add Contact" android:width="10px"></Button></TableRow>
+				</TableRow>
 				
 				<TableRow 	android:id="@+id/TableRow04" 
 							android:layout_width="wrap_content" 
 							android:layout_height="wrap_content"
 							android:gravity="center">
-							<EditText 
-										android:layout_width="wrap_content" 
+							
+							<EditText   android:layout_width="wrap_content" 
 										android:layout_height="wrap_content" 
 										android:id="@+id/txtMessageBody" 
 										android:width="250px" android:height="100px">
 							</EditText>
 							
-							<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnSendMessage" android:text="Send Message" android:width="10px"></Button>
+				</TableRow>
+				
+				<TableRow 	android:id="@+id/TableRow04" 
+							android:layout_width="wrap_content" 
+							android:layout_height="wrap_content"
+							android:gravity="center">
+							
+							<Button android:layout_width="wrap_content" 
+									android:layout_height="wrap_content" 
+									android:id="@+id/btnSendMessage" 
+									android:text="Send Message" 
+									android:width="100px"
+									android:gravity="center"></Button>
 							
 				</TableRow>
 </TableLayout>
