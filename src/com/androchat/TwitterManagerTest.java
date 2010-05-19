@@ -21,10 +21,10 @@ public class TwitterManagerTest {
 		try {
 			TwitterManager twitter = TwitterManager.getInstance();		
 			twitter.Connect(args[0], args[1], 10);
-			ArrayList<User> arr = twitter.GetAllContacts();
+			ArrayList<User> arr = twitter.GetAllContacts(false);
 			for(User u : arr){
 				System.out.println("msg for " + u.getScreenName() + ":");
-				twitter.SendMessage(u.getScreenName(), "Test");
+				//twitter.SendMessage(u.getScreenName(), "Test");
 				for(DirectMessage msg : twitter.GetMessagesForContact(u.getScreenName())){
 					System.out.println(msg.getSender().getScreenName() + " " + msg.getCreatedAt().toString() + " : " + msg.getText());
 				}

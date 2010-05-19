@@ -14,20 +14,21 @@ public class TwitterManager {
 
 	private static TwitterManager m_Instance;
 	private Twitter m_Twitter;
-	private String m_UserName;
-	private String m_Password;
-	private int m_Interval;
-	private boolean m_Sound;
-	private boolean m_Vibration;
+	private String m_strUserName;
+	private String m_strPassword;
+	private int m_nInterval;
+	private boolean m_bSound;
+	private boolean m_bVibration;
 	private long m_nMaxMsgNum;
 	private HashMap<String, ArrayList<DirectMessage>> m_hashMessages;
-	private Timer m_timer;
+	private ArrayList<User> m_arrUsers;
+	private Timer m_Timer;
 	
 	private TwitterManager(){
 		m_hashMessages = new HashMap<String, ArrayList<DirectMessage>>();
 		m_nMaxMsgNum = 1;
-		m_timer = new Timer();
-		m_Interval = 0;
+		m_Timer = new Timer();
+		m_nInterval = 0;
 	}
 	
 	public static TwitterManager getInstance(){
@@ -37,62 +38,64 @@ public class TwitterManager {
 	}
 	
 	public void Connect(String userName, String passWord, int nInterval) throws TwitterException{
-		m_UserName = userName;
-		m_Password = passWord;
-		m_Twitter = new TwitterFactory().getInstance(m_UserName,m_Password);
+		m_strUserName = userName;
+		m_strPassword = passWord;
+		m_Twitter = new TwitterFactory().getInstance(m_strUserName,m_strPassword);
 		
 		SyncMessages();
         setInterval(nInterval);
 	}
 	
 	public void Disconnect(){
-		m_timer.cancel();
+		m_Timer.cancel();
 	}
 		
 	public void setInterval(int interval){
-		if(m_Interval != 0){
-			m_timer.cancel();
-			m_timer.purge();
+		if(m_nInterval != 0){
+			m_Timer.cancel();
+			m_Timer.purge();
 		}
-		m_Interval = interval;
-		m_timer.scheduleAtFixedRate(new TimerTask() {
+		m_nInterval = interval;
+		m_Timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				try{
 					SyncMessages();
 				}
 				catch(TwitterException e){}
 			}
-		}, m_Interval*60000, m_Interval*60000);
+		}, m_nInterval*60000, m_nInterval*60000);
 	}
 	
 	public int getInterval(){
-		return m_Interval;
+		return m_nInterval;
 	}
 	
 	public void setVibration(boolean vibration) {
-		m_Vibration = vibration;
+		m_bVibration = vibration;
 	}
 
 	public boolean isVibration() {
-		return m_Vibration;
+		return m_bVibration;
 	}
 
 	public void setSound(boolean sound) {
-		m_Sound = sound;
+		m_bSound = sound;
 	}
 
 	public boolean isSound() {
-		return m_Sound;
+		return m_bSound;
 	}
 
-	public ArrayList<User> GetAllContacts() throws TwitterException{
-		ArrayList<User> arrUsers = new ArrayList<User>();
-		IDs ids = m_Twitter.getFollowersIDs(); 
-        for (int id : ids.getIDs()){
-        	User user = m_Twitter.showUser(id);
-        	arrUsers.add(user);
-        }
-		return arrUsers;
+	public ArrayList<User> GetAllContacts(boolean useCache) throws TwitterException{
+		if(!useCache || m_arrUsers == null){
+			m_arrUsers = new ArrayList<User>();
+			IDs ids = m_Twitter.getFollowersIDs(); 
+	        for (int id : ids.getIDs()){
+	        	User user = m_Twitter.showUser(id);
+	        	m_arrUsers.add(user);
+	        }
+		}
+		return m_arrUsers;
 	}
 	
 	public ArrayList<DirectMessage> GetMessagesForContact(String strUserName) throws TwitterException{
