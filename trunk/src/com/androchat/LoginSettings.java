@@ -1,19 +1,14 @@
 package com.androchat;
 
+import twitter4j.*;
 import android.app.Activity;
-import android.app.NotificationManager;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Vibrator;
-import android.provider.MediaStore.Audio;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.app.Notification;
-import java.lang.*;
 
 
 public class LoginSettings extends Activity {
@@ -47,15 +42,28 @@ public class LoginSettings extends Activity {
         {	 
 	          public void onClick(View v) 
 	          {
-	        	// TODO : DOV - log in to twitter
 	        	String strPassword = txtPassWord.getText().toString();
 	        	String strUserName = txtUserName.getText().toString();
-	        	String strInterval = txtTimeInterval.getText().toString();
-
-	        	// TODO: can not succeed to open new window
-	            finish();
-	            Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
-	            startActivity(iMessagesList);
+	        	int nInterval =  Integer.parseInt(txtTimeInterval.getText().toString());
+	        	boolean bConnected = false;
+	        	String strErrorMsg;
+	        	try{
+		        	TwitterManager.getInstance().Connect(strUserName, strPassword, nInterval);
+		        	bConnected = true;
+	        	}
+	        	catch(TwitterException e){
+	        		strErrorMsg = e.getMessage();
+	        	}
+	        	if(bConnected){
+		        	
+	        		// TODO: can not succeed to open new window
+		            finish();
+		            Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
+		            startActivity(iMessagesList);
+	        	}
+	        	else{
+	        		// TODO: create msg box and with strErrorMsg
+	        	}
 	          }
         });
         
@@ -89,7 +97,7 @@ public class LoginSettings extends Activity {
         {	 
 	          public void onClick(View v) 
 	          {
-	            // TODO: DOV
+	            TwitterManager.getInstance().Disconnect();
 	          }
         });
 	
