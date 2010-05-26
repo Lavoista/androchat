@@ -27,6 +27,7 @@ public class AndroChat extends Activity {
         	// Open the messageList.
             Intent iMessagesList = new Intent(AndroChat.this, MessagesList.class);
             startActivity(iMessagesList);
+            finish();
 
     		//this.setContentView(R.layout.messageslist);
         }
@@ -34,6 +35,7 @@ public class AndroChat extends Activity {
         	// Open the login and settings screen.
             Intent iLogin = new Intent(AndroChat.this, LoginSettings.class);
             startActivity(iLogin);
+            finish();
             
         	
         }

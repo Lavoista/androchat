@@ -63,7 +63,7 @@
 							<EditText   android:layout_width="wrap_content" 
 										android:layout_height="wrap_content" 
 										android:id="@+id/txtMessageBody" 
-										android:width="250px" android:height="100px">
+										android:width="250px">
 							</EditText>
 							
 				</TableRow>
