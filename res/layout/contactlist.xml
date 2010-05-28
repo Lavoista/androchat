@@ -1,41 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<ScrollView
+<TableLayout
 		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_width="fill_parent"
-		android:layout_height="fill_parent"
-		android:id="@+id/scvContactsMain">
-			  	
-			  	<TableLayout 	android:id="@+id/tblContacts"
-			  					android:orientation="vertical"
-			  					android:scrollbars="vertical"
-			  					android:scrollbarStyle="insideOverlay"
-			  					android:layout_width="fill_parent"
-			  					android:layout_height="fill_parent"
-			  					android:clickable="false"
-			  					android:longClickable="false">
-		
-						<TableRow 
-						android:layout_width="fill_parent" 
-						android:id="@+id/RowButtons" 
-						android:layout_height="fill_parent" 
-						android:minHeight="40px" 
-						android:gravity="center">
-		
-								<Button 
-									android:layout_width="wrap_content" 
-									android:layout_height="wrap_content" 
-									android:id="@+id/btnComposeNew" 
-									android:text="Compose New  ">
-								</Button>
-								<Button 
-									android:layout_width="wrap_content" 
-									android:layout_height="wrap_content" 
-									android:id="@+id/btnSettings" 
-									android:text="Settings">
-								</Button>
-								
+		android:layout_height="fill_parent" 
+		android:layout_width="fill_parent">
+
+			<TableRow> 
+				<TableLayout
+					android:layout_height="fill_parent" 
+					android:layout_width="fill_parent">
+					<TableRow>
+						<Button 
+							android:layout_width="wrap_content" 
+							android:layout_height="wrap_content" 
+							android:id="@+id/btnComposeNew" 
+							android:text="Compose New"
+							android:gravity="left"
+							android:layout_marginLeft="20dip"
+							android:layout_marginRight="30dip">
+						</Button>
+						<Button 
+							android:layout_width="wrap_content" 
+							android:layout_height="wrap_content" 
+							android:id="@+id/btnSettings" 
+							android:text="Settings"
+							android:gravity="right"
+							android:layout_marginLeft="30dip"
+							android:layout_marginRight="20dip">
+						</Button>
 					</TableRow>
-		
-			</TableLayout>
-		</ScrollView>
+				</TableLayout>
+			</TableRow>
+			
+			<TableRow>
+				<ScrollView
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent"
+					android:id="@+id/scvContactsMain">
+				  	
+				  	<TableLayout 	android:id="@+id/tblContacts"
+				  					android:orientation="vertical"
+				  					android:scrollbars="vertical"
+				  					android:scrollbarStyle="insideOverlay"
+				  					android:layout_width="fill_parent"
+				  					android:layout_height="fill_parent"
+				  					android:clickable="false"
+				  					android:longClickable="false">
+				 	</TableLayout>
+				</ScrollView>
+			</TableRow>
+			
+</TableLayout>
+
+

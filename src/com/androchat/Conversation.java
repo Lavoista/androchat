@@ -3,6 +3,8 @@ package com.androchat;
 import java.util.ArrayList;
 import java.util.List;
 
+import winterwell.jtwitter.Twitter.Message;
+
 import android.app.Activity;
 import android.graphics.Color;
 import android.hardware.Camera.Size;
@@ -32,6 +34,8 @@ public class Conversation extends Activity {
 
 		this._scvMain = (ScrollView)this.findViewById(R.id.scvMain);
 		this._tblMessages = (TableLayout)this.findViewById(R.id.tblMessages);
+		
+		ArrayList<Message> conversionMsgs = TwitterManager.getInstance().GetMessagesForContact("orcohen1987");
 		
 		List<String> listMsgs = new ArrayList<String>();
 
@@ -74,7 +78,7 @@ public class Conversation extends Activity {
 
 		
 		// Go through each item in the array
-        for (int iCurrent = 0; iCurrent < listMsgs.size(); iCurrent++)
+        for (int iCurrent = 0; iCurrent < conversionMsgs.size(); iCurrent++)
         {
             // Create a TableRow and give it an ID
             TableRow tr = new TableRow(this);
@@ -94,21 +98,21 @@ public class Conversation extends Activity {
                     LayoutParams.FILL_PARENT));
             labelTV.setWidth(200);
 
-            if (iCurrent%3==0){
+            if (conversionMsgs.get(iCurrent).getSender().screenName=="shauliant"){
             	tr.setBackgroundColor(Color.LTGRAY);
             	tr.setGravity(Gravity.RIGHT);
-                labelTV.setText("User: " + listMsgs.get(iCurrent));
+                labelTV.setText( conversionMsgs.get(iCurrent).getSender().screenName + ": " + conversionMsgs.get(iCurrent).getText() );
             	labelTV.setTextColor(Color.BLACK);
             	labelTV.setGravity(Gravity.RIGHT);
             	labelTV.setPadding(0,0,8,0);
             }
             else{
             	labelTV.setGravity(Gravity.LEFT);
-                labelTV.setText("Me: " + listMsgs.get(iCurrent));
+            	labelTV.setText( conversionMsgs.get(iCurrent).getSender().screenName + ": " + conversionMsgs.get(iCurrent).getText() );
             	labelTV.setPadding(5,0,0,0);
             }
             
-            labelTV.setText(labelTV.getText() + String.valueOf(labelTV.getWidth()) );
+            //labelTV.setText(labelTV.getText() + String.valueOf(labelTV.getWidth()) );
             
             tr.addView(labelTV);
 

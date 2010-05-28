@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import winterwell.jtwitter.*;
+import winterwell.jtwitter.Twitter.User;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,7 +25,6 @@ public class NewMessage extends Activity{
 	private Button					_btnSendMessage;
 	private EditText 				_txtAddressName;
 	private EditText 				_txtMessageBody;
-	private TwitterManager 			twitter;
 	private ArrayAdapter<String> 	adapter;
 	private	boolean					isFirstRun = true;					
 	
@@ -40,20 +40,6 @@ public class NewMessage extends Activity{
 		_txtMessageBody = (EditText) findViewById(R.id.txtMessageBody);
 		_spnrAddresseeName = (Spinner) findViewById(R.id.spnrAddresseeName);
 
-		// get twitter singleton instance
-		twitter = TwitterManager.getInstance();
-		 
-		 
-		try {
-			twitter.Connect("shauliant", "sasbRinat19");
-		} catch (TwitterException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			//return;
-		}
-
-		//try
-		{
 			//ArrayList<User> arr = twitter.GetAllContacts();
 			List<String> listUsers = new ArrayList<String>();
 
@@ -70,14 +56,13 @@ public class NewMessage extends Activity{
 			listUsers.add("Dov4");
 			listUsers.add("Or4");
 
-			//for(User u : arr){
-			//	listUsers.add(u.getName());
+			//List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
+			//for(User u : followers){
+			//	listUsers.add(u.screenName);
 			//}
 			
 			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, listUsers);
-		    
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		    
 		    _spnrAddresseeName.setAdapter(adapter);
 		    
 		    _spnrAddresseeName.setOnItemSelectedListener(new Spinner.OnItemSelectedListener(){
@@ -150,59 +135,40 @@ public class NewMessage extends Activity{
 	                //v.setVisibility(View.VISIBLE);
 	        }
 	        });
-		}
-		//catch ( TwitterException e)
-		{
-			
-		}
 		
-		_btnSendMessage.setOnClickListener( new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				// TODO : Start send message process
-				
-				
-				// verify login	
-				try {
-					twitter.Connect( "", "");
+			_btnSendMessage.setOnClickListener( new View.OnClickListener()
+				{
+				public void onClick(View v) {					
+					//TwitterManager.getInstance().SendMessage(_txtAddressName.getText().toString(), _txtMessageBody.getText().toString());	
+					Intent iSettings = new Intent(NewMessage.this, ContactList.class);
+					startActivity(iSettings);
+					finish();
 				}
-				catch (TwitterException e) {
-					// handle wrong login
-					// notify user for problem
-				}
-				
-				
-				// verify contact
-				//		1. verify that the logged-in user is following the contact
-				//		2. verify that the contact is following on me
-				
-			}
-		});
-		
-		_txtAddressName.addTextChangedListener( new TextWatcher(){
-
-			@Override
-			public void afterTextChanged(Editable arg0) {
-				// TODO : When user enters his contact name
-				
-			}
-
-			@Override
-			public void beforeTextChanged(CharSequence s, int start, int count,
-					int after) {
-				// TODO : When user enters his contact name
-				
-			}
-
-			@Override
-			public void onTextChanged(CharSequence s, int start, int before,
-					int count) {
-				// TODO : When user enters his contact name
-				
-			}
+			});
 			
-		});
+			_txtAddressName.addTextChangedListener( new TextWatcher(){
+	
+				@Override
+				public void afterTextChanged(Editable arg0) {
+					// TODO : When user enters his contact name
+					
+				}
+	
+				@Override
+				public void beforeTextChanged(CharSequence s, int start, int count,
+						int after) {
+					// TODO : When user enters his contact name
+					
+				}
+	
+				@Override
+				public void onTextChanged(CharSequence s, int start, int before,
+						int count) {
+					// TODO : When user enters his contact name
+					
+				}
+			
+			});
 		
 		
 	}

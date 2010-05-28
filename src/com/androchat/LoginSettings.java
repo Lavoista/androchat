@@ -75,7 +75,7 @@ public class LoginSettings extends Activity {
 		        	e.putBoolean("vibaration", bVibaration);
 		        	e.commit();
 		        	
-		        	Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
+		        	Intent iMessagesList = new Intent(LoginSettings.this, ContactList.class);
 		            startActivity(iMessagesList);
 		            finish();
 	        	}
