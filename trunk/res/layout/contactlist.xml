@@ -1,41 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-		xmlns:android="http://schemas.android.com/apk/res/android"
-		android:layout_height="fill_parent" 
-		android:layout_width="fill_parent">
 
-			<TableLayout 
-					android:id="@+id/TableLayout01" 
-					android:layout_height="fill_parent" 
-					android:layout_width="fill_parent">
-							
-					<TableRow 
-							android:layout_width="fill_parent" 
-							android:id="@+id/RowButtons" 
-							android:layout_height="fill_parent" 
-							android:minHeight="40px" 
-							android:gravity="center">
-			
-							<Button 
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content" 
-								android:id="@+id/btnComposeNew" 
-								android:text="Compose New  ">
-							</Button>
-							<Button 
-								android:layout_width="wrap_content" 
-								android:layout_height="wrap_content" 
-								android:id="@+id/btnSettings" 
-								android:text="Settings">
-							</Button>
-					</TableRow>
-			</TableLayout>
-			
-			<ScrollView
-				xmlns:android="http://schemas.android.com/apk/res/android"
-				android:layout_width="fill_parent"
-				android:layout_height="fill_parent"
-				android:id="@+id/scvContactsMain">
+<ScrollView
+		xmlns:android="http://schemas.android.com/apk/res/android"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:id="@+id/scvContactsMain">
 			  	
 			  	<TableLayout 	android:id="@+id/tblContacts"
 			  					android:orientation="vertical"
@@ -45,9 +14,28 @@
 			  					android:layout_height="fill_parent"
 			  					android:clickable="false"
 			  					android:longClickable="false">
-			 	</TableLayout>
-			</ScrollView>
-			
-</LinearLayout>
-
-
+		
+						<TableRow 
+						android:layout_width="fill_parent" 
+						android:id="@+id/RowButtons" 
+						android:layout_height="fill_parent" 
+						android:minHeight="40px" 
+						android:gravity="center">
+		
+								<Button 
+									android:layout_width="wrap_content" 
+									android:layout_height="wrap_content" 
+									android:id="@+id/btnComposeNew" 
+									android:text="Compose New  ">
+								</Button>
+								<Button 
+									android:layout_width="wrap_content" 
+									android:layout_height="wrap_content" 
+									android:id="@+id/btnSettings" 
+									android:text="Settings">
+								</Button>
+								
+					</TableRow>
+		
+			</TableLayout>
+		</ScrollView>
