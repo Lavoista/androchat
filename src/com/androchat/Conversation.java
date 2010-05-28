@@ -11,6 +11,7 @@ import android.os.Bundle;
 //import android.widget.ScrollView;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -19,7 +20,7 @@ import android.widget.TableRow.LayoutParams;
 public class Conversation extends Activity {
 
 	
-	//private ScrollView _scvMain;
+	private ScrollView _scvMain;
 	private TableLayout _tblMessages;
 	
 	
@@ -29,7 +30,7 @@ public class Conversation extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.conversation);
 
-		//this._scvMain = (ScrollView)this.findViewById(R.id.scvMain);
+		this._scvMain = (ScrollView)this.findViewById(R.id.scvMain);
 		this._tblMessages = (TableLayout)this.findViewById(R.id.tblMessages);
 		
 		List<String> listMsgs = new ArrayList<String>();
@@ -87,20 +88,24 @@ public class Conversation extends Activity {
             // Create a TextView to house the name of the province
             TextView labelTV = new TextView(this);
             labelTV.setId(2000+iCurrent);
-            labelTV.setText(listMsgs.get(iCurrent));
-            labelTV.setTextSize((float) 25.0);
+            labelTV.setTextSize((float) 20.0);
             labelTV.setLayoutParams(new LayoutParams(
                     LayoutParams.FILL_PARENT,
                     LayoutParams.FILL_PARENT));
-            labelTV.setWidth(100);
+            labelTV.setWidth(200);
 
             if (iCurrent%3==0){
             	tr.setBackgroundColor(Color.LTGRAY);
+            	tr.setGravity(Gravity.RIGHT);
+                labelTV.setText("User: " + listMsgs.get(iCurrent));
             	labelTV.setTextColor(Color.BLACK);
             	labelTV.setGravity(Gravity.RIGHT);
+            	labelTV.setPadding(0,0,8,0);
             }
             else{
             	labelTV.setGravity(Gravity.LEFT);
+                labelTV.setText("Me: " + listMsgs.get(iCurrent));
+            	labelTV.setPadding(5,0,0,0);
             }
             
             labelTV.setText(labelTV.getText() + String.valueOf(labelTV.getWidth()) );
