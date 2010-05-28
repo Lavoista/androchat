@@ -16,7 +16,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.TableRow.LayoutParams;
 
-public class Conversion extends Activity {
+public class Conversation extends Activity {
 
 	
 	//private ScrollView _scvMain;
@@ -27,7 +27,7 @@ public class Conversion extends Activity {
 	public void onCreate(Bundle savedInstanceState){
 
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.conversion);
+		this.setContentView(R.layout.conversation);
 
 		//this._scvMain = (ScrollView)this.findViewById(R.id.scvMain);
 		this._tblMessages = (TableLayout)this.findViewById(R.id.tblMessages);

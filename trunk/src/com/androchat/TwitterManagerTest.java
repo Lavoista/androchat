@@ -2,8 +2,10 @@ package com.androchat;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
-import twitter4j.*;
+import winterwell.jtwitter.*;
+import winterwell.jtwitter.Twitter.*;
 
 public class TwitterManagerTest {
 
@@ -21,11 +23,11 @@ public class TwitterManagerTest {
 		try {
 			TwitterManager twitter = TwitterManager.getInstance();		
 			twitter.Connect(args[0], args[1], 10);
-			ArrayList<User> arr = twitter.GetAllContacts(false);
+			List<User> arr = twitter.GetAllContacts(false);
 			for(User u : arr){
 				System.out.println("msg for " + u.getScreenName() + ":");
 				//twitter.SendMessage(u.getScreenName(), "Test");
-				for(DirectMessage msg : twitter.GetMessagesForContact(u.getScreenName())){
+				for(Message msg : twitter.GetMessagesForContact(u.getScreenName())){
 					System.out.println(msg.getSender().getScreenName() + " " + msg.getCreatedAt().toString() + " : " + msg.getText());
 				}
 			}
