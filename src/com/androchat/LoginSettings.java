@@ -2,7 +2,11 @@ package com.androchat;
 
 import winterwell.jtwitter.*;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,32 +41,48 @@ public class LoginSettings extends Activity {
         this.txtPassWord = (EditText)this.findViewById(R.id.txtPassWord);
         this.txtTimeInterval = (EditText)this.findViewById(R.id.txtInterval);
         
+        // Get Preferences
+        SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
+        txtUserName.setText(pref.getString("username", ""));
+        txtPassWord.setText(pref.getString("password", ""));
+        txtTimeInterval.setText(Integer.toString(pref.getInt("interval", 10)));
+        chkSound.setChecked(pref.getBoolean("sound", true));
+        chkVibaration.setChecked(pref.getBoolean("vibaration", true));
+        
         // Define events to the btnLogin
         this.btnLogIn.setOnClickListener(new OnClickListener() 
         {	 
 	          public void onClick(View v) 
 	          {
-	        	String strPassword = txtPassWord.getText().toString();
 	        	String strUserName = txtUserName.getText().toString();
+	        	String strPassword = txtPassWord.getText().toString();
 	        	int nInterval =  Integer.parseInt(txtTimeInterval.getText().toString());
-	        	boolean bConnected = false;
-	        	String strErrorMsg;
+	        	boolean bSound = chkSound.isChecked();
+	        	boolean bVibaration = chkVibaration.isChecked();
+	        	
 	        	try{
-		        	TwitterManager.getInstance().Connect(strUserName, strPassword, nInterval);
-		        	bConnected = true;
-	        	}
-	        	catch(TwitterException e){
-	        		strErrorMsg = e.getMessage();
-	        	}
-	        	if(bConnected){
+		        	TwitterManager.getInstance().Connect(strUserName, strPassword);
+		        	TwitterManager.getInstance().setInterval(nInterval);
+		        	TwitterManager.getInstance().setSound(bSound);
+		        	TwitterManager.getInstance().setVibration(bVibaration);
 		        	
-	        		// TODO: can not succeed to open new window
-		            finish();
-		            Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
+		        	// Save Preferences
+		        	Editor e = LoginSettings.this.getPreferences(Context.MODE_PRIVATE).edit();
+		        	e.putString("username", strUserName);
+		        	e.putString("password", strPassword);
+		        	e.putInt("interval", nInterval);
+		        	e.putBoolean("sound", bSound);
+		        	e.putBoolean("vibaration", bVibaration);
+		        	e.commit();
+		        	
+		        	Intent iMessagesList = new Intent(LoginSettings.this, MessagesList.class);
 		            startActivity(iMessagesList);
+		            finish();
 	        	}
-	        	else{
-	        		// TODO: create msg box and with strErrorMsg
+	        	catch(TwitterException ex){
+	        		new AlertDialog.Builder(LoginSettings.this)
+	        	      .setMessage(ex.getMessage())
+	        	      .show();
 	        	}
 	          }
         });

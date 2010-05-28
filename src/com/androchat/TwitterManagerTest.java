@@ -22,7 +22,7 @@ public class TwitterManagerTest {
 		System.out.println("Test");
 		try {
 			TwitterManager twitter = TwitterManager.getInstance();		
-			twitter.Connect(args[0], args[1], 10);
+			twitter.Connect(args[0], args[1]);
 			List<User> arr = twitter.GetAllContacts(false);
 			for(User u : arr){
 				System.out.println("msg for " + u.getScreenName() + ":");
