@@ -2,8 +2,7 @@ package com.androchat;
 import java.util.ArrayList;
 import java.util.List;
 
-import twitter4j.TwitterException;
-import twitter4j.User;
+import winterwell.jtwitter.*;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;

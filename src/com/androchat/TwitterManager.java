@@ -8,7 +8,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import twitter4j.*;
+import winterwell.jtwitter.*;
+import winterwell.jtwitter.Twitter.Message;
+import winterwell.jtwitter.Twitter.User;
 
 public class TwitterManager {
 
@@ -20,12 +22,12 @@ public class TwitterManager {
 	private boolean m_bSound;
 	private boolean m_bVibration;
 	private long m_nMaxMsgNum;
-	private HashMap<String, ArrayList<DirectMessage>> m_hashMessages;
-	private ArrayList<User> m_arrUsers;
+	private HashMap<String, ArrayList<Message>> m_hashMessages;
+	private List<User> m_arrUsers;
 	private Timer m_Timer;
 	
 	private TwitterManager(){
-		m_hashMessages = new HashMap<String, ArrayList<DirectMessage>>();
+		m_hashMessages = new HashMap<String, ArrayList<Message>>();
 		m_nMaxMsgNum = 1;
 		m_Timer = new Timer();
 		m_nInterval = 0;
@@ -40,8 +42,8 @@ public class TwitterManager {
 	public void Connect(String userName, String passWord, int nInterval) throws TwitterException{
 		m_strUserName = userName;
 		m_strPassword = passWord;
-		m_Twitter = new TwitterFactory().getInstance(m_strUserName,m_strPassword);
-		
+		m_Twitter = new Twitter(m_strUserName,m_strPassword);
+
 		SyncMessages();
         setInterval(nInterval);
 	}
@@ -86,58 +88,50 @@ public class TwitterManager {
 		return m_bSound;
 	}
 
-	public ArrayList<User> GetAllContacts(boolean useCache) throws TwitterException{
+	public List<User> GetAllContacts(boolean useCache) throws TwitterException{
 		if(!useCache || m_arrUsers == null){
-			m_arrUsers = new ArrayList<User>();
-			IDs ids = m_Twitter.getFollowersIDs(); 
-	        for (int id : ids.getIDs()){
-	        	User user = m_Twitter.showUser(id);
-	        	m_arrUsers.add(user);
-	        }
+			m_arrUsers = m_Twitter.getFollowers();
 		}
 		return m_arrUsers;
 	}
 	
-	public ArrayList<DirectMessage> GetMessagesForContact(String strUserName) throws TwitterException{
+	public ArrayList<Message> GetMessagesForContact(String strUserName) throws TwitterException{
 		if(!m_hashMessages.containsKey(strUserName)){
-			m_hashMessages.put(strUserName, new ArrayList<DirectMessage>());
+			m_hashMessages.put(strUserName, new ArrayList<Message>());
 		}
 		return m_hashMessages.get(strUserName);
 	}
 	
 	public void SendMessage(String strUserName, String strMsg) throws TwitterException{
-		GetMessagesForContact(strUserName).add(m_Twitter.sendDirectMessage(strUserName, strMsg));
+		GetMessagesForContact(strUserName).add(m_Twitter.sendMessage(strUserName, strMsg));
 	}
 	
 	private void SyncMessages() throws TwitterException{
-		Paging page = new Paging();
-		page.setSinceId(m_nMaxMsgNum);
-		page.setCount(200);
-		List<DirectMessage> messages = m_Twitter.getDirectMessages(page);
-        for (DirectMessage message : messages) {
-        	String strSenderScreenName = message.getSenderScreenName();
+		List<Message> messages = m_Twitter.getDirectMessages();
+        for (Message message : messages) {
+        	String strSenderScreenName = message.getSender().screenName;
         	if(!m_hashMessages.containsKey(strSenderScreenName)){
-        		m_hashMessages.put(strSenderScreenName, new ArrayList<DirectMessage>());
+        		m_hashMessages.put(strSenderScreenName, new ArrayList<Message>());
         	}
         	if(message.getId() > m_nMaxMsgNum){
         		m_nMaxMsgNum = message.getId();
         	}
         	m_hashMessages.get(strSenderScreenName).add(message);
         }
-        messages = m_Twitter.getSentDirectMessages(page);
-        for (DirectMessage message : messages) {
-        	String strRecipientScreenName = message.getRecipientScreenName();
+        messages = m_Twitter.getDirectMessagesSent();
+        for (Message message : messages) {
+        	String strRecipientScreenName = message.getRecipient().getScreenName();
         	if(!m_hashMessages.containsKey(strRecipientScreenName)){
-        		m_hashMessages.put(strRecipientScreenName, new ArrayList<DirectMessage>());
+        		m_hashMessages.put(strRecipientScreenName, new ArrayList<Message>());
         	}
         	if(message.getId() > m_nMaxMsgNum){
         		m_nMaxMsgNum = message.getId();
         	}
         	m_hashMessages.get(strRecipientScreenName).add(message);
         }
-        for(ArrayList<DirectMessage> arr : m_hashMessages.values()){
-        	Collections.sort(arr, new Comparator<DirectMessage>() {
-				public int compare(DirectMessage object1, DirectMessage object2) {
+        for(ArrayList<Message> arr : m_hashMessages.values()){
+        	Collections.sort(arr, new Comparator<Message>() {
+				public int compare(Message object1, Message object2) {
 					return object1.getCreatedAt().compareTo(object2.getCreatedAt());
 				}
         	});

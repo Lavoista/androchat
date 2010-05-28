@@ -8,7 +8,7 @@
 <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
 </TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/TimeInterval"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time Interval:" android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/lblIntervalTime"></TextView>
 
-<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtInterval" android:minWidth="150px" android:maxWidth="150px" android:inputType="numberSigned" android:digits="true"></EditText>
+<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtInterval" android:minWidth="150px" android:maxWidth="150px" android:digits="0123456789"></EditText>
 </TableRow>
 <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
 
