@@ -21,6 +21,7 @@ public class TwitterManager {
 	private int m_nInterval;
 	private boolean m_bSound;
 	private boolean m_bVibration;
+	private boolean m_bConnected;
 	private long m_nMaxMsgNum;
 	private HashMap<String, ArrayList<Message>> m_hashMessages;
 	private List<User> m_arrUsers;
@@ -39,33 +40,23 @@ public class TwitterManager {
 		return m_Instance;
 	}
 	
-	public void Connect(String userName, String passWord, int nInterval) throws TwitterException{
+	public void Connect(String userName, String passWord) throws TwitterException{
+		m_bConnected = false;
 		m_strUserName = userName;
 		m_strPassword = passWord;
 		m_Twitter = new Twitter(m_strUserName,m_strPassword);
 
 		SyncMessages();
-        setInterval(nInterval);
+        m_bConnected = true;
 	}
 	
 	public void Disconnect(){
+		m_bConnected = false;
 		m_Timer.cancel();
 	}
 		
 	public void setInterval(int interval){
-		if(m_nInterval != 0){
-			m_Timer.cancel();
-			m_Timer.purge();
-		}
 		m_nInterval = interval;
-		m_Timer.scheduleAtFixedRate(new TimerTask() {
-			public void run() {
-				try{
-					SyncMessages();
-				}
-				catch(TwitterException e){}
-			}
-		}, m_nInterval*60000, m_nInterval*60000);
 	}
 	
 	public int getInterval(){
@@ -86,6 +77,10 @@ public class TwitterManager {
 
 	public boolean isSound() {
 		return m_bSound;
+	}
+
+	public boolean isConected() {
+		return m_bConnected;
 	}
 
 	public List<User> GetAllContacts(boolean useCache) throws TwitterException{

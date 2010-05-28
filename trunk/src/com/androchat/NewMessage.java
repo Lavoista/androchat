@@ -45,7 +45,7 @@ public class NewMessage extends Activity{
 		 
 		 
 		try {
-			twitter.Connect("shauliant", "sasbRinat19", 10);
+			twitter.Connect("shauliant", "sasbRinat19");
 		} catch (TwitterException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -165,7 +165,7 @@ public class NewMessage extends Activity{
 				
 				// verify login	
 				try {
-					twitter.Connect( "", "", 10);
+					twitter.Connect( "", "");
 				}
 				catch (TwitterException e) {
 					// handle wrong login
