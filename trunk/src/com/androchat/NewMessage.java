@@ -43,23 +43,23 @@ public class NewMessage extends Activity{
 			//ArrayList<User> arr = twitter.GetAllContacts();
 			List<String> listUsers = new ArrayList<String>();
 
-			listUsers.add("Shauli1");
-			listUsers.add("Dov1");
-			listUsers.add("Or1");
-			listUsers.add("Shauli2");
-			listUsers.add("Dov2");
-			listUsers.add("Or2");
-			listUsers.add("Shauli3");
-			listUsers.add("Dov3");
-			listUsers.add("Or3");
-			listUsers.add("Shauli4");
-			listUsers.add("Dov4");
-			listUsers.add("Or4");
+//			listUsers.add("Shauli1");
+//			listUsers.add("Dov1");
+//			listUsers.add("Or1");
+//			listUsers.add("Shauli2");
+//			listUsers.add("Dov2");
+//			listUsers.add("Or2");
+//			listUsers.add("Shauli3");
+//			listUsers.add("Dov3");
+//			listUsers.add("Or3");
+//			listUsers.add("Shauli4");
+//			listUsers.add("Dov4");
+//			listUsers.add("Or4");
 
-			//List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
-			//for(User u : followers){
-			//	listUsers.add(u.screenName);
-			//}
+			List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
+			for(User u : followers){
+				listUsers.add(u.screenName);
+			}
 			
 			adapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item, listUsers);
 		    adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -139,7 +139,7 @@ public class NewMessage extends Activity{
 			_btnSendMessage.setOnClickListener( new View.OnClickListener()
 				{
 				public void onClick(View v) {					
-					//TwitterManager.getInstance().SendMessage(_txtAddressName.getText().toString(), _txtMessageBody.getText().toString());	
+					TwitterManager.getInstance().SendMessage(_txtAddressName.getText().toString(), _txtMessageBody.getText().toString());	
 					Intent iSettings = new Intent(NewMessage.this, ContactList.class);
 					startActivity(iSettings);
 					finish();
