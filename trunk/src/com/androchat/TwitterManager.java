@@ -6,9 +6,9 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import winterwell.jtwitter.*;
+import winterwell.jtwitter.Twitter;
+import winterwell.jtwitter.TwitterException;
 import winterwell.jtwitter.Twitter.Message;
 import winterwell.jtwitter.Twitter.User;
 
@@ -85,6 +85,7 @@ public class TwitterManager {
 
 	public List<User> GetAllContacts(boolean useCache) throws TwitterException{
 		if(!useCache || m_arrUsers == null){
+			//TODO: paging, caching
 			m_arrUsers = m_Twitter.getFollowers();
 		}
 		return m_arrUsers;
@@ -102,6 +103,7 @@ public class TwitterManager {
 	}
 	
 	private void SyncMessages() throws TwitterException{
+		//TODO: paging, caching
 		List<Message> messages = m_Twitter.getDirectMessages();
         for (Message message : messages) {
         	String strSenderScreenName = message.getSender().screenName;
