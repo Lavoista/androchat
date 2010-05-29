@@ -6,6 +6,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Timer;
+import java.util.TimerTask;
 
 import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
@@ -27,6 +28,7 @@ public class TwitterManager {
 	private HashMap<String, ArrayList<Message>> m_hashMessages;
 	private List<User> m_arrUsers;
 	private Timer m_Timer;
+	private INotifier m_Notifier;
 	
 	private TwitterManager(){
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
@@ -56,9 +58,29 @@ public class TwitterManager {
 		m_bConnected = false;
 		m_Timer.cancel();
 	}
-		
+	
+	public void setNotifier(INotifier notifier){
+		m_Notifier = notifier;
+	}
+	
 	public void setInterval(int interval){
+		if(m_nInterval != 0){
+			m_Timer.cancel();
+			m_Timer.purge();
+		}
 		m_nInterval = interval;
+		m_Timer.scheduleAtFixedRate(new TimerTask() {
+			public void run() {
+				try{
+					List<Message> lstMsg = SyncMessages();
+					if(!lstMsg.isEmpty() && m_Notifier != null){
+						m_Notifier.Notify(lstMsg);
+					}
+				}
+				catch(TwitterException e){}
+			}
+		}, m_nInterval*60000, m_nInterval*60000);
+	
 	}
 	
 	public int getInterval(){
@@ -104,7 +126,9 @@ public class TwitterManager {
 		GetMessagesForContact(strUserName).add(m_Twitter.sendMessage(strUserName, strMsg));
 	}
 	
-	private void SyncMessages() throws TwitterException{
+	private List<Message> SyncMessages() throws TwitterException{
+		List<Message> lstMsg = new ArrayList<Message>();
+		
 		//TODO: caching
 		m_Twitter.setCount(200);
 		
@@ -113,6 +137,7 @@ public class TwitterManager {
 		
 		m_Twitter.setSinceId(m_nMaxMsgNum);
 		List<Message> messages = m_Twitter.getDirectMessages();
+		lstMsg.addAll(messages);
         for (Message message : messages) {
         	String strSenderScreenName = message.getSender().screenName;
         	if(!m_hashMessages.containsKey(strSenderScreenName)){
@@ -125,6 +150,7 @@ public class TwitterManager {
         }
         m_Twitter.setSinceId(m_nMaxSentMsgNum);
         messages = m_Twitter.getDirectMessagesSent();
+        lstMsg.addAll(messages);
         for (Message message : messages) {
         	String strRecipientScreenName = message.getRecipient().getScreenName();
         	if(!m_hashMessages.containsKey(strRecipientScreenName)){
@@ -142,5 +168,6 @@ public class TwitterManager {
 				}
         	});
         }
+        return lstMsg;
 	}
 }
