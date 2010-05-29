@@ -15,54 +15,58 @@ public final class R {
         public static final int notification_icon_status_bar=0x7f020001;
     }
     public static final class id {
-        public static final int EditText01=0x7f060020;
-        public static final int EditText02=0x7f06001e;
-        public static final int EditText03=0x7f060022;
-        public static final int LinearLayout01=0x7f060007;
-        public static final int Login=0x7f06001b;
-        public static final int Notify=0x7f060015;
-        public static final int Notify2=0x7f060017;
-        public static final int Password=0x7f060012;
-        public static final int RowButtons=0x7f060002;
-        public static final int RowSpace=0x7f060001;
-        public static final int Space=0x7f06000b;
-        public static final int Spinner01=0x7f060023;
-        public static final int TableLayout01=0x7f060000;
-        public static final int TableRow01=0x7f060008;
-        public static final int TableRow02=0x7f060028;
-        public static final int TableRow03=0x7f06002b;
-        public static final int TableRow04=0x7f06002d;
-        public static final int TextView01=0x7f060029;
-        public static final int TimeInterval=0x7f06000c;
-        public static final int TitleRow=0x7f060009;
-        public static final int UserName=0x7f06000f;
-        public static final int View01=0x7f060021;
-        public static final int ViewStub01=0x7f06001f;
-        public static final int btnComposeNew  =0x7f060003;
-        public static final int btnLogOut=0x7f06001d;
-        public static final int btnLogin=0x7f06001c;
-        public static final int btnSendMessage=0x7f06002f;
-        public static final int btnSettings=0x7f060004;
-        public static final int chkSound=0x7f060018;
-        public static final int chkVibaration=0x7f060019;
-        public static final int lblIntervalTime=0x7f06000d;
-        public static final int lblNotify=0x7f060016;
-        public static final int lblPassword=0x7f060013;
-        public static final int lblUserName=0x7f060010;
-        public static final int scvMain=0x7f060005;
-        public static final int space=0x7f06001a;
-        public static final int spnrAddresseeName=0x7f06002c;
-        public static final int tblMessages=0x7f060006;
-        public static final int txtAddresseeName=0x7f06002a;
-        public static final int txtInterval=0x7f06000e;
-        public static final int txtMain=0x7f06000a;
-        public static final int txtMessageBody=0x7f06002e;
-        public static final int txtPassWord=0x7f060014;
-        public static final int txtUserName=0x7f060011;
-        public static final int widget28=0x7f060024;
-        public static final int widget30=0x7f060025;
-        public static final int widget31=0x7f060026;
-        public static final int widget32=0x7f060027;
+        public static final int EditText01=0x7f070020;
+        public static final int EditText02=0x7f07001e;
+        public static final int EditText03=0x7f070022;
+        public static final int LinearLayout01=0x7f070007;
+        public static final int Login=0x7f07001b;
+        public static final int Notify=0x7f070015;
+        public static final int Notify2=0x7f070017;
+        public static final int Password=0x7f070012;
+        public static final int RowButtons=0x7f070002;
+        public static final int RowSpace=0x7f070001;
+        public static final int Space=0x7f07000b;
+        public static final int Spinner01=0x7f070023;
+        public static final int TableLayout01=0x7f070000;
+        public static final int TableRow01=0x7f070008;
+        public static final int TableRow02=0x7f070028;
+        public static final int TableRow03=0x7f07002b;
+        public static final int TableRow04=0x7f07002d;
+        public static final int TextView01=0x7f070029;
+        public static final int TimeInterval=0x7f07000c;
+        public static final int TitleRow=0x7f070009;
+        public static final int UserName=0x7f07000f;
+        public static final int View01=0x7f070021;
+        public static final int ViewStub01=0x7f07001f;
+        public static final int btnComposeNew  =0x7f070003;
+        public static final int btnLogOut=0x7f07001d;
+        public static final int btnLogin=0x7f07001c;
+        public static final int btnSendMessage=0x7f07002f;
+        public static final int btnSettings=0x7f070004;
+        public static final int chkSound=0x7f070018;
+        public static final int chkVibaration=0x7f070019;
+        public static final int interval=0x7f07000e;
+        public static final int lblIntervalTime=0x7f07000d;
+        public static final int lblNotify=0x7f070016;
+        public static final int lblPassword=0x7f070013;
+        public static final int lblUserName=0x7f070010;
+        public static final int notification_is_message=0x7f070032;
+        public static final int notification_text=0x7f070033;
+        public static final int notification_time=0x7f070030;
+        public static final int notification_user=0x7f070031;
+        public static final int scvMain=0x7f070005;
+        public static final int space=0x7f07001a;
+        public static final int spnrAddresseeName=0x7f07002c;
+        public static final int tblMessages=0x7f070006;
+        public static final int txtAddresseeName=0x7f07002a;
+        public static final int txtMain=0x7f07000a;
+        public static final int txtMessageBody=0x7f07002e;
+        public static final int txtPassWord=0x7f070014;
+        public static final int txtUserName=0x7f070011;
+        public static final int widget28=0x7f070024;
+        public static final int widget30=0x7f070025;
+        public static final int widget31=0x7f070026;
+        public static final int widget32=0x7f070027;
     }
     public static final class layout {
         public static final int contactsscrenn=0x7f030000;
@@ -71,6 +75,8 @@ public final class R {
         public static final int main=0x7f030003;
         public static final int messageslist=0x7f030004;
         public static final int newmessage=0x7f030005;
+        public static final int notification=0x7f030006;
+        public static final int notification_longtext=0x7f030007;
     }
     public static final class raw {
         public static final int tweet=0x7f040000;
@@ -79,6 +85,15 @@ public final class R {
         public static final int app_desc=0x7f050003;
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
+        public static final int notification_is_message=0x7f050005;
         public static final int planet_prompt=0x7f050002;
+        public static final int unauthorized=0x7f050004;
+    }
+    public static final class style {
+        public static final int notificationIcon=0x7f060000;
+        public static final int notificationIsMessage=0x7f060003;
+        public static final int notificationText=0x7f060004;
+        public static final int notificationTime=0x7f060001;
+        public static final int notificationUsername=0x7f060002;
     }
 }
