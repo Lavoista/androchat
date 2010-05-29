@@ -23,6 +23,7 @@ public class TwitterManager {
 	private boolean m_bVibration;
 	private boolean m_bConnected;
 	private long m_nMaxMsgNum;
+	private long m_nMaxSentMsgNum;
 	private HashMap<String, ArrayList<Message>> m_hashMessages;
 	private List<User> m_arrUsers;
 	private Timer m_Timer;
@@ -30,6 +31,7 @@ public class TwitterManager {
 	private TwitterManager(){
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
 		m_nMaxMsgNum = 1;
+		m_nMaxSentMsgNum = 1;
 		m_Timer = new Timer();
 		m_nInterval = 0;
 	}
@@ -85,7 +87,7 @@ public class TwitterManager {
 
 	public List<User> GetAllContacts(boolean useCache) throws TwitterException{
 		if(!useCache || m_arrUsers == null){
-			//TODO: paging, caching
+			//TODO: caching
 			m_arrUsers = m_Twitter.getFollowers();
 		}
 		return m_arrUsers;
@@ -103,7 +105,13 @@ public class TwitterManager {
 	}
 	
 	private void SyncMessages() throws TwitterException{
-		//TODO: paging, caching
+		//TODO: caching
+		m_Twitter.setCount(200);
+		
+		//TODO: more than 200 messages
+		//m_Twitter.setMaxResults(1000);
+		
+		m_Twitter.setSinceId(m_nMaxMsgNum);
 		List<Message> messages = m_Twitter.getDirectMessages();
         for (Message message : messages) {
         	String strSenderScreenName = message.getSender().screenName;
@@ -115,14 +123,15 @@ public class TwitterManager {
         	}
         	m_hashMessages.get(strSenderScreenName).add(message);
         }
+        m_Twitter.setSinceId(m_nMaxSentMsgNum);
         messages = m_Twitter.getDirectMessagesSent();
         for (Message message : messages) {
         	String strRecipientScreenName = message.getRecipient().getScreenName();
         	if(!m_hashMessages.containsKey(strRecipientScreenName)){
         		m_hashMessages.put(strRecipientScreenName, new ArrayList<Message>());
         	}
-        	if(message.getId() > m_nMaxMsgNum){
-        		m_nMaxMsgNum = message.getId();
+        	if(message.getId() > m_nMaxSentMsgNum){
+        		m_nMaxSentMsgNum = message.getId();
         	}
         	m_hashMessages.get(strRecipientScreenName).add(message);
         }
