@@ -6,16 +6,11 @@ import java.util.Date;
 import java.util.List;
 
 import winterwell.jtwitter.Twitter.Message;
-
 import android.app.Activity;
 import android.graphics.Color;
-import android.hardware.Camera.Size;
-//import android.graphics.Color;
 import android.os.Bundle;
-//import android.widget.ScrollView;
 import android.text.format.DateUtils;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;

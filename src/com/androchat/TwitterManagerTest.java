@@ -1,11 +1,10 @@
 package com.androchat;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
-import winterwell.jtwitter.*;
-import winterwell.jtwitter.Twitter.*;
+import winterwell.jtwitter.TwitterException;
+import winterwell.jtwitter.Twitter.Message;
+import winterwell.jtwitter.Twitter.User;
 
 public class TwitterManagerTest {
 
