@@ -1,12 +1,8 @@
 package com.androchat;
 
 import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import winterwell.jtwitter.Twitter.Message;
-
-import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;

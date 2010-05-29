@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import winterwell.jtwitter.Twitter.User;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
