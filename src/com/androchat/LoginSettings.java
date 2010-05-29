@@ -1,5 +1,8 @@
 package com.androchat;
 
+import java.text.ChoiceFormat;
+import java.text.MessageFormat;
+
 import winterwell.jtwitter.*;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -7,16 +10,24 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 
 public class LoginSettings extends Activity {
 	
+	final static int[] INTERVALS = { 3, 5, 10, 15, 30, 60, 120 };
+	final static long[] VIBRATION_PATTERN = new long[] { 0, 100, 60, 100 };
+	final static int DEFAULT_INTERVAL_INDEX = 4;
 	
 	// Creating controls that need implementation:
 	private Button btnLogIn;
@@ -25,7 +36,7 @@ public class LoginSettings extends Activity {
 	private CheckBox chkVibaration;
 	private EditText txtUserName;
 	private EditText txtPassWord;
-	private EditText txtTimeInterval;
+	private Spinner Interval;
 	
 	public void onCreate(Bundle savedInstanceState)	{
 		
@@ -39,13 +50,29 @@ public class LoginSettings extends Activity {
         this.chkVibaration = (CheckBox)this.findViewById(R.id.chkVibaration);
         this.txtUserName = (EditText)this.findViewById(R.id.txtUserName);
         this.txtPassWord = (EditText)this.findViewById(R.id.txtPassWord);
-        this.txtTimeInterval = (EditText)this.findViewById(R.id.txtInterval);
+        this.Interval = (Spinner)this.findViewById(R.id.interval);
         
+		// Set up the interval choices:
+        final String[] intervalChoiceText = new String[INTERVALS.length];
+
+		for (int i = 0; i < INTERVALS.length; ++i) {
+			int option = INTERVALS[i];
+			intervalChoiceText[i] = MessageFormat.format(
+				new ChoiceFormat(getString(R.string.interval_option))
+					.format(option), option);
+		}
+		
+		ArrayAdapter<String> a = new ArrayAdapter<String>(this,
+			android.R.layout.simple_spinner_item, intervalChoiceText);
+		a.setDropDownViewResource(
+			android.R.layout.simple_spinner_dropdown_item);
+		Interval.setAdapter(a);
+		
         // Get Preferences
         SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
         txtUserName.setText(pref.getString("username", ""));
         txtPassWord.setText(pref.getString("password", ""));
-        txtTimeInterval.setText(Integer.toString(pref.getInt("interval", 10)));
+		Interval.setSelection(DEFAULT_INTERVAL_INDEX);
         chkSound.setChecked(pref.getBoolean("sound", true));
         chkVibaration.setChecked(pref.getBoolean("vibaration", true));
         
@@ -56,7 +83,7 @@ public class LoginSettings extends Activity {
 	          {
 	        	String strUserName = txtUserName.getText().toString();
 	        	String strPassword = txtPassWord.getText().toString();
-	        	int nInterval =  Integer.parseInt(txtTimeInterval.getText().toString());
+	        	int nInterval =  INTERVALS[Interval.getSelectedItemPosition()];
 	        	boolean bSound = chkSound.isChecked();
 	        	boolean bVibaration = chkVibaration.isChecked();
 	        	
@@ -94,7 +121,15 @@ public class LoginSettings extends Activity {
 	          {
 	        	  if (chkSound.isChecked()) 
 	        	  {
-	        		  // TODO : OR
+  					MediaPlayer mp = MediaPlayer.create(
+  						LoginSettings.this, R.raw.tweet);
+  					mp.setOnCompletionListener(new OnCompletionListener() 
+  					{
+  						public void onCompletion(MediaPlayer mp) {
+  							mp.release();
+  						}
+  					});
+  					mp.start();
 	        		  
 	        	  }
 	          }
@@ -107,8 +142,8 @@ public class LoginSettings extends Activity {
 	          {
 	        	  if (chkVibaration.isChecked()) 
 	        	  {
-	        		  // TODO : OR
-				  }
+	        		  ((Vibrator) getSystemService(VIBRATOR_SERVICE))
+						.vibrate(VIBRATION_PATTERN, -1);				  }
 	          }
         });
         
