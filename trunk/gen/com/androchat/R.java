@@ -18,16 +18,14 @@ public final class R {
         public static final int EditText01=0x7f070020;
         public static final int EditText02=0x7f07001e;
         public static final int EditText03=0x7f070022;
-        public static final int LinearLayout01=0x7f070007;
+        public static final int LinearLayout01=0x7f070006;
         public static final int Login=0x7f07001b;
         public static final int Notify=0x7f070015;
         public static final int Notify2=0x7f070017;
         public static final int Password=0x7f070012;
-        public static final int RowButtons=0x7f070002;
-        public static final int RowSpace=0x7f070001;
         public static final int Space=0x7f07000b;
         public static final int Spinner01=0x7f070023;
-        public static final int TableLayout01=0x7f070000;
+        public static final int TableLayout01=0x7f070007;
         public static final int TableRow01=0x7f070008;
         public static final int TableRow02=0x7f070028;
         public static final int TableRow03=0x7f07002b;
@@ -38,11 +36,11 @@ public final class R {
         public static final int UserName=0x7f07000f;
         public static final int View01=0x7f070021;
         public static final int ViewStub01=0x7f07001f;
-        public static final int btnComposeNew  =0x7f070003;
+        public static final int btnComposeNew=0x7f070000;
         public static final int btnLogOut=0x7f07001d;
         public static final int btnLogin=0x7f07001c;
         public static final int btnSendMessage=0x7f07002f;
-        public static final int btnSettings=0x7f070004;
+        public static final int btnSettings=0x7f070001;
         public static final int chkSound=0x7f070018;
         public static final int chkVibaration=0x7f070019;
         public static final int interval=0x7f07000e;
@@ -50,14 +48,12 @@ public final class R {
         public static final int lblNotify=0x7f070016;
         public static final int lblPassword=0x7f070013;
         public static final int lblUserName=0x7f070010;
-        public static final int notification_is_message=0x7f070032;
-        public static final int notification_text=0x7f070033;
-        public static final int notification_time=0x7f070030;
-        public static final int notification_user=0x7f070031;
-        public static final int scvMain=0x7f070005;
+        public static final int scvContactsMain=0x7f070002;
+        public static final int scvMain=0x7f070004;
         public static final int space=0x7f07001a;
         public static final int spnrAddresseeName=0x7f07002c;
-        public static final int tblMessages=0x7f070006;
+        public static final int tblContacts=0x7f070003;
+        public static final int tblMessages=0x7f070005;
         public static final int txtAddresseeName=0x7f07002a;
         public static final int txtMain=0x7f07000a;
         public static final int txtMessageBody=0x7f07002e;
@@ -69,14 +65,12 @@ public final class R {
         public static final int widget32=0x7f070027;
     }
     public static final class layout {
-        public static final int contactsscrenn=0x7f030000;
+        public static final int contactlist=0x7f030000;
         public static final int conversation=0x7f030001;
         public static final int login=0x7f030002;
         public static final int main=0x7f030003;
         public static final int messageslist=0x7f030004;
         public static final int newmessage=0x7f030005;
-        public static final int notification=0x7f030006;
-        public static final int notification_longtext=0x7f030007;
     }
     public static final class raw {
         public static final int tweet=0x7f040000;
@@ -85,6 +79,7 @@ public final class R {
         public static final int app_desc=0x7f050003;
         public static final int app_name=0x7f050001;
         public static final int hello=0x7f050000;
+        public static final int interval_option=0x7f050006;
         public static final int notification_is_message=0x7f050005;
         public static final int planet_prompt=0x7f050002;
         public static final int unauthorized=0x7f050004;
