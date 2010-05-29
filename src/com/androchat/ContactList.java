@@ -62,52 +62,25 @@ public class ContactList extends Activity {
         });
 		
         
-		List<String> listMsgs = new ArrayList<String>();
-
-		listMsgs.add("Shauli1");
-		listMsgs.add("Dov1");
-		listMsgs.add("Or1");
-		listMsgs.add("Shauli2");
-		listMsgs.add("Dov2");
-		listMsgs.add("Or2");
-		listMsgs.add("Shauli3");
-		listMsgs.add("Dov3");
-		listMsgs.add("Or3");
-		listMsgs.add("Shauli4");
-		listMsgs.add("Dov4");
-		listMsgs.add("Or4");
-		listMsgs.add("Shauli1");
-		listMsgs.add("Dov1");
-		listMsgs.add("Or1");
-		listMsgs.add("Shauli2");
-		listMsgs.add("Dov2");
-		listMsgs.add("Or2");
-		listMsgs.add("Shauli3");
-		listMsgs.add("Dov3");
-		listMsgs.add("Or3");
-		listMsgs.add("Shauli4");
-		listMsgs.add("Dov4");
-		listMsgs.add("Or4");
-		listMsgs.add("Shauli1");
-		listMsgs.add("Dov1");
-		listMsgs.add("Or1");
-		listMsgs.add("Shauli2");
-		listMsgs.add("Dov2");
-		listMsgs.add("Or2");
-		listMsgs.add("Shauli3");
-		listMsgs.add("Dov3");
-		listMsgs.add("Or3");
-		listMsgs.add("Shauli4");
-		listMsgs.add("Dov4");
-		listMsgs.add("Or4");
+//		List<String> listMsgs = new ArrayList<String>();
+//		listMsgs.add("Shauli1");
+//		listMsgs.add("Dov1");
+//		listMsgs.add("Or1");
+//		listMsgs.add("Shauli2");
+//		listMsgs.add("Dov2");
+//		listMsgs.add("Or2");
+//		listMsgs.add("Shauli3");
+//		listMsgs.add("Dov3");
+//		listMsgs.add("Or3");
+//		listMsgs.add("Shauli4");
 		
 		
-		//List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
+		List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
 
-		if (listMsgs!=null && listMsgs.size()>0)
+		if (followers!=null && followers.size()>0)
 		{
 			// Go through each item in the array
-	        for (int iCurrent = 0; iCurrent < listMsgs.size(); iCurrent++)
+	        for (int iCurrent = 0; iCurrent < followers.size(); iCurrent++)
 	        {
 	            // Create a TableRow and give it an ID
 	            TableRow tr = new TableRow(this);
@@ -129,9 +102,8 @@ public class ContactList extends Activity {
 					                    LayoutParams.FILL_PARENT,
 					                    LayoutParams.FILL_PARENT));
 	        	labelTV.setGravity(Gravity.LEFT);
-	        	labelTV.setWidth(160);
-	            //labelTV.setText( followers.get(iCurrent).name + "(" + followers.get(iCurrent).screenName + ")");
-	        	labelTV.setText( listMsgs.get(iCurrent));
+	            labelTV.setText( followers.get(iCurrent).name + "(" + followers.get(iCurrent).screenName + ")");
+	        	//labelTV.setText( followers.get(iCurrent));
 	        	labelTV.setPadding(5,0,0,0);
 	
 //	        	tr.addView(imageContact);
@@ -159,8 +131,7 @@ public class ContactList extends Activity {
                     LayoutParams.FILL_PARENT,
                     LayoutParams.FILL_PARENT));
         	labelTV.setGravity(Gravity.LEFT);
-        	labelTV.setWidth(160);
-            labelTV.setText( "There are zero contacts for you." );
+            labelTV.setText( "There are no contacts for current user." );
         	labelTV.setPadding(5,0,0,0);
 
             tr.addView(labelTV);
