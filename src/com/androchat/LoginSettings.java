@@ -3,12 +3,9 @@ package com.androchat;
 import java.text.ChoiceFormat;
 import java.text.MessageFormat;
 
-import winterwell.jtwitter.*;
+import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
