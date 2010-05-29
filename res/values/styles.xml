@@ -2,7 +2,7 @@
 <resources>
 <style name="notificationIcon">
 	<item name="android:layout_marginLeft">2sp</item>
-	<item name="android:src">@drawable/icon</item>
+	<item name="android:src">@drawable/notification_icon_status_bar</item>
 </style>
 <style name="notificationTime">
 	<item name="android:layout_marginLeft">3sp</item>

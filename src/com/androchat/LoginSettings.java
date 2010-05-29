@@ -6,6 +6,9 @@ import java.text.MessageFormat;
 import winterwell.jtwitter.*;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -43,6 +46,12 @@ public class LoginSettings extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.login);
 
+    	// Trigger the AlarmReceiver instead of starting the service
+		// directly so that the wake lock gets acquired.
+		// The service will take care of rescheduling itself
+		// appropriately.
+		sendBroadcast(new Intent(LoginSettings.this, AlarmReceiver.class));
+		
         // Get controls from the layout
         this.btnLogIn = (Button)this.findViewById(R.id.btnLogin);
         this.btnLogOut = (Button)this.findViewById(R.id.btnLogOut);
@@ -80,7 +89,7 @@ public class LoginSettings extends Activity {
         this.btnLogIn.setOnClickListener(new OnClickListener() 
         {	 
 	          public void onClick(View v) 
-	          {
+	          {	
 	        	String strUserName = txtUserName.getText().toString();
 	        	String strPassword = txtPassWord.getText().toString();
 	        	int nInterval =  INTERVALS[Interval.getSelectedItemPosition()];
