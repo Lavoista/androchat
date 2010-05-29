@@ -78,7 +78,7 @@ public class LoginSettings extends Activity {
         SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
         txtUserName.setText(pref.getString("username", ""));
         txtPassWord.setText(pref.getString("password", ""));
-		Interval.setSelection(DEFAULT_INTERVAL_INDEX);
+		Interval.setSelection(pref.getInt("interval", DEFAULT_INTERVAL_INDEX));
         chkSound.setChecked(pref.getBoolean("sound", true));
         chkVibaration.setChecked(pref.getBoolean("vibaration", true));
         
@@ -89,7 +89,8 @@ public class LoginSettings extends Activity {
 	          {	
 	        	String strUserName = txtUserName.getText().toString();
 	        	String strPassword = txtPassWord.getText().toString();
-	        	int nInterval =  INTERVALS[Interval.getSelectedItemPosition()];
+	        	int nIntervalIndex = Interval.getSelectedItemPosition();
+	        	int nInterval =  INTERVALS[nIntervalIndex];
 	        	boolean bSound = chkSound.isChecked();
 	        	boolean bVibaration = chkVibaration.isChecked();
 	        	
@@ -103,7 +104,7 @@ public class LoginSettings extends Activity {
 		        	Editor e = LoginSettings.this.getPreferences(Context.MODE_PRIVATE).edit();
 		        	e.putString("username", strUserName);
 		        	e.putString("password", strPassword);
-		        	e.putInt("interval", nInterval);
+		        	e.putInt("interval", nIntervalIndex);
 		        	e.putBoolean("sound", bSound);
 		        	e.putBoolean("vibaration", bVibaration);
 		        	e.commit();
