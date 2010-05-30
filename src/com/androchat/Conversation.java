@@ -17,8 +17,10 @@ import android.widget.TableRow.LayoutParams;
 
 public class Conversation extends Activity {
 
+	// Data Members
 	private TableLayout _tblMessages;
-
+	private String m_strUserName;
+	
 	private String getMsgDate( Date dt )
 	{
 		String strDate;
@@ -102,6 +104,14 @@ public class Conversation extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 
+		// TODO : Shauli this is how you get parameters
+		// Use the const below and look for reference in Notifications.java
+		Bundle extra = getIntent().getExtras();
+		if (extra != null)
+		{
+			m_strUserName = extra.getString(TwitterManager.getInstance().USER_NAME);
+		}
+		
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.conversation);
 
