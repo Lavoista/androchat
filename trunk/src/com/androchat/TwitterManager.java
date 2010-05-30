@@ -15,6 +15,9 @@ import winterwell.jtwitter.Twitter.User;
 
 public class TwitterManager {
 
+	// Consts
+	public  final String USER_NAME = "UserName"; 
+	
 	private static TwitterManager m_Instance;
 	private Twitter m_Twitter;
 	private String m_strUserName;
