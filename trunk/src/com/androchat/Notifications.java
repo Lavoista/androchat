@@ -42,6 +42,7 @@ public class Notifications extends Service implements INotifier{
 		
 		for ( int i=0; i<lstMsg.size(); i++ )
 		{
+			// TODO : Should check here if the message wasn't by the connected user. 
 			Message msg = lstMsg.get(i);
 			
 			//Instantiate the Notification
@@ -53,11 +54,12 @@ public class Notifications extends Service implements INotifier{
 			//Define the Notification's expanded message and Intent
 			Context context = getApplicationContext();
 			CharSequence contentTitle = "AndroChat - New Message";
-			CharSequence contentText = msg.getSender().getScreenName();
+			CharSequence contentText = "Message from " + msg.getSender().getScreenName();
 			
 			// Declare intent to the notification
 			Intent conversationIntent = new Intent(Notifications.this, Conversation.class);
-			conversationIntent.putExtra(TwitterManager.getInstance().USER_NAME, msg.getSender().getScreenName()); 
+			conversationIntent.putExtra(TwitterManager.getInstance().SCREEN_NAME, msg.getSender().getScreenName());
+			conversationIntent.putExtra(TwitterManager.getInstance().USER_NAME, msg.getSender().getName()); 
 			Intent notificationIntent = conversationIntent;
 			
 			PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);

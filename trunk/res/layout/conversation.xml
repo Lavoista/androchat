@@ -3,10 +3,10 @@
 			    android:orientation="vertical"
 			    android:layout_height="wrap_content" 
 			    android:layout_width="fill_parent">
-		     <TextView 	android:id="@+id/TextView01" 
+		     <TextView 	android:id="@+id/tvConversationName" 
 		     			android:layout_height="wrap_content" 
 		     			android:layout_width="wrap_content" 
-		     			android:text="Showing converation with :" />
+		     			android:text="Showing converation :" />
 		     			
 		     <ScrollView 	android:layout_marginBottom="50dip" 
 		     				android:id="@+id/ScrollView01" 
@@ -29,12 +29,13 @@
 		     				 
 				     	<TableLayout android:layout_width="fill_parent"
 				     				 android:layout_height="wrap_content"
-				     				 android:stretchColumns="0">
+				     				 android:stretchColumns ="0">
 				     				 
 				     			<TableRow>	
 							     	<EditText 	android:id="@+id/txtConversationMessageBody"
 							     				android:layout_width="fill_parent" 
-												android:layout_height="wrap_content" />
+												android:layout_height="wrap_content" 
+												android:width="250px" />
 												
 							        <Button 	android:id="@+id/btnConverstionSend"
 							        			android:layout_height="wrap_content" 
