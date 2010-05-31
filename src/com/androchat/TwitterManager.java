@@ -17,6 +17,7 @@ public class TwitterManager {
 
 	// Consts
 	public  final String USER_NAME = "UserName"; 
+	public  final String SCREEN_NAME = "ScreenName"; 
 	
 	private static TwitterManager m_Instance;
 	private Twitter m_Twitter;

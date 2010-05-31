@@ -19,22 +19,6 @@
 										android:text="New Message" 
 										android:textSize="25px"></TextView>
 				</TableRow>
-
-				<TableRow 	android:id="@+id/TableRow01" 
-							android:layout_width="wrap_content" 
-							android:layout_height="wrap_content" 
-							android:gravity="center">
-
-							<EditText 	android:layout_width="wrap_content" 
-										android:layout_height="wrap_content" 
-										android:id="@+id/txtAddresseeName" 
-										android:gravity="center" 
-										android:height="50px" 
-										android:maxHeight="50px" 
-										android:maxLines="1" 
-										android:width="200px">
-							</EditText>
-				</TableRow>
 				
 				<TableRow 	android:id="@+id/TableRow03" 
 							android:layout_width="wrap_content" 

@@ -10,7 +10,7 @@
     <uses-permission android:name="android.permission.NOTIFICATION_SERVICE"/>
     <permission android:name="com.androchat.privateservices"></permission>
 	<uses-permission android:name="com.androchat.privateservices"></uses-permission>
-    <application 	android:icon="@drawable/icon" android:label="@string/app_name" android:description="@string/app_desc" android:debuggable="true">
+    <application 	android:icon="@drawable/icon" android:label="@string/app_name" android:description="@string/app_desc">
     		<activity 	android:name="AndroChat"
                   		android:label="@string/app_name">
 		            <intent-filter>

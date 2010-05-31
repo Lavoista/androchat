@@ -109,8 +109,8 @@ public class LoginSettings extends Activity {
 		        	e.putBoolean("vibaration", bVibaration);
 		        	e.commit();
 		        	
-		        	Intent iMessagesList = new Intent(LoginSettings.this, ContactList.class);
-		            startActivity(iMessagesList);
+		        	Intent iContactList = new Intent(LoginSettings.this, ContactList.class);
+		            startActivity(iContactList);
 		            finish();
 	        	}
 	        	catch(TwitterException ex){
@@ -159,7 +159,9 @@ public class LoginSettings extends Activity {
         {	 
 	          public void onClick(View v) 
 	          {
+	        	// TODO: Or, here it should delete the saved username and password from Preferences
 	            TwitterManager.getInstance().Disconnect();
+	            finish();
 	          }
         });
 	
