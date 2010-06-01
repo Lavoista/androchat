@@ -7,4 +7,5 @@
 <string name="unauthorized">Username or password is wrong.</string>
 <string name="notification_is_message">(Direct message)</string>
 <string name="interval_option">1#1 minute| 1&lt;{0} minutes</string>
+<string name="connected_user">Currently connected: {0}</string>
 </resources>

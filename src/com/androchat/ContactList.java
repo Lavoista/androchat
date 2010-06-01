@@ -7,15 +7,11 @@ import winterwell.jtwitter.Twitter.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.widget.Button;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -80,7 +76,7 @@ public class ContactList extends Activity {
 
 		            
 		            trOuter.setOnClickListener(new OnClickListener() {
-						@Override
+
 						public void onClick(View v) {
 							
 				        	Intent iConversation = new Intent(ContactList.this, Conversation.class);

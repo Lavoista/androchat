@@ -3,8 +3,6 @@ package com.androchat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-
 import winterwell.jtwitter.TwitterException;
 import winterwell.jtwitter.Twitter.Message;
 import android.app.Activity;
@@ -35,7 +33,6 @@ public class Conversation extends Activity {
 	private String getMsgDate( Date dt )
 	{
 		String strDate;
-		Date dtNow = new Date();
 	
 		Date dtDiffNow = getDateDiff(dt);
 
