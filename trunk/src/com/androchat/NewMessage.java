@@ -60,40 +60,43 @@ public class NewMessage extends Activity{
 			_btnSendMessage.setOnClickListener( new View.OnClickListener()
 				{
 				public void onClick(View v) {
-					if (_spnrAddresseeName.getSelectedItemPosition()>0)
+					if (_spnrAddresseeName.getSelectedItemPosition()>-1)
 					{
-						boolean bMsgSentSuccess = false;
-						try
+						if (_txtMessageBody.getText().length() > 140)
 						{
-							TwitterManager.getInstance().SendMessage(_spnrAddresseeName.getSelectedItem().toString(), _txtMessageBody.getText().toString());
-							bMsgSentSuccess = true;	
-						}
-						catch (TwitterException ex)
-						{
-			        		new AlertDialog.Builder(NewMessage.this)
-			        	      .setMessage("Error Ocoured :\n" + ex.getMessage())
-			        	      .show();		
-						}
-						
-						if (bMsgSentSuccess)
-						{
-							Intent iSettings = new Intent(NewMessage.this, ContactList.class);
-							startActivity(iSettings);
-							finish();
-
-			        		new AlertDialog.Builder(NewMessage.this)
-			        	      .setMessage("Message was sent !")
-			        	      .show();	
+							boolean bMsgSentSuccess = false;
+							try
+							{
+								TwitterManager.getInstance().SendMessage(_spnrAddresseeName.getSelectedItem().toString(), _txtMessageBody.getText().toString());
+								bMsgSentSuccess = true;	
+							}
+							catch (TwitterException ex)
+							{
+				        		new AlertDialog.Builder(NewMessage.this)
+				        	      .setMessage(R.string.error_common_prefix + " :\n" + ex.getMessage())
+				        	      .show();		
+							}
+							
+							if (bMsgSentSuccess)
+							{
+				        		new AlertDialog.Builder(NewMessage.this)
+				        	      .setMessage(R.string.message_send_success)
+				        	      .show();	
+				        		
+								Intent iSettings = new Intent(NewMessage.this, ContactList.class);
+								startActivity(iSettings);
+								finish();
+							}
 						}
 					}
 					else
 					{
 		        		new AlertDialog.Builder(NewMessage.this)
-		        	      .setMessage("Please choose a contact")
+		        	      .setMessage(R.string.error_choose_contact)
 		        	      .show();
 					}
 				}
 			});
 	}
-	
+
 }

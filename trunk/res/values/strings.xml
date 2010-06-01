@@ -8,4 +8,11 @@
 <string name="notification_is_message">(Direct message)</string>
 <string name="interval_option">1#1 minute| 1&lt;{0} minutes</string>
 <string name="connected_user">Currently connected: {0}</string>
+<string name="error_message_too_long">Message is too long !\nPlease write up to 140 characters.</string>
+<string name="error_common_prefix">Error Ocoured</string>
+<string name="message_send_success">&quot;Message was sent !&quot;</string>
+<string name="error_no_contacts">There are no contacts for current user</string>
+<string name="error_no_messages">There are no message between you and the viewed user</string>
+<string name="error_choose_contact">Please choose a contact</string>
+
 </resources>
