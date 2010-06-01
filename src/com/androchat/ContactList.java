@@ -7,11 +7,16 @@ import winterwell.jtwitter.Twitter.User;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -86,9 +91,14 @@ public class ContactList extends Activity {
 						}
 					});
 		            
-	//	            ImageView imageContact = new ImageView(this);
-	//	            imageContact.setId(2000+iCurrent);
-	//	            imageContact.setImageResource(R.drawable.notification_icon_status_bar);
+		            ImageView imageContact = new ImageView(this);
+		            imageContact.setId(7000+iCurrent);
+		            imageContact.setLayoutParams(new LayoutParams(
+		                    LayoutParams.WRAP_CONTENT,
+		                    LayoutParams.FILL_PARENT));
+		            imageContact.setImageResource(R.drawable.notification_icon_status_bar);
+		            imageContact.setPadding(5,2,0,0);
+		            
 		            
 		            TableLayout tlInner = new TableLayout(this);
 		            tlInner.setId(2000 + iCurrent);
@@ -106,7 +116,7 @@ public class ContactList extends Activity {
 		            
 		            TextView labelTV_Name = new TextView(this);
 		            labelTV_Name.setId(4000+iCurrent);
-		            labelTV_Name.setTextSize((float) 25.0);
+		            labelTV_Name.setTextSize((float) 23.0);
 		            labelTV_Name.setLayoutParams(new LayoutParams(
 						                    LayoutParams.WRAP_CONTENT,
 						                    LayoutParams.WRAP_CONTENT));
@@ -124,14 +134,19 @@ public class ContactList extends Activity {
 		            
 		            TextView labelTV_ScreenName = new TextView(this);
 		            labelTV_ScreenName.setId(6000+iCurrent);
-		            labelTV_ScreenName.setTextSize((float) 15.0);
+		            labelTV_ScreenName.setTextSize((float) 13.0);
+		            labelTV_ScreenName.setTextColor(Color.DKGRAY);
 		            labelTV_ScreenName.setLayoutParams(new LayoutParams(
 						                    LayoutParams.WRAP_CONTENT,
 						                    LayoutParams.WRAP_CONTENT));
 		            labelTV_ScreenName.setGravity(Gravity.LEFT);
 		        	labelTV_ScreenName.setText( "(" + followers.get(iCurrent).screenName + ")");
-		        	labelTV_ScreenName.setPadding(5,0,0,0);		        	
+		        	labelTV_ScreenName.setPadding(5,0,0,3);		        	
 		
+		            // Create a row seperator
+		            View lineSepartor = new View(this);
+		            lineSepartor.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 2));
+		            lineSepartor.setBackgroundColor(Color.LTGRAY);
 		        	
 	//	        	tr.addView(imageContact);
 		        	trInner_Name.addView(labelTV_Name);
@@ -139,13 +154,19 @@ public class ContactList extends Activity {
 
 		        	tlInner.addView(trInner_Name);
 		        	tlInner.addView(trInner_ScreenName);
-		        	
+
+		        	trOuter.addView(imageContact);
 		        	trOuter.addView(tlInner);
 		
 		            // Add the TableRow to the TableLayout
 		            _tblContacts.addView(trOuter, new TableLayout.LayoutParams(
 		                    LayoutParams.FILL_PARENT,
 		                    LayoutParams.FILL_PARENT));
+		            
+		            if (iCurrent+1 < followers.size())
+		            {
+		            	_tblContacts.addView(lineSepartor);
+		            }
 		        }
 			
 			}
@@ -165,7 +186,7 @@ public class ContactList extends Activity {
 	                    LayoutParams.FILL_PARENT,
 	                    LayoutParams.FILL_PARENT));
 	        	labelTV.setGravity(Gravity.LEFT);
-	            labelTV.setText( "There are no contacts for current user." );
+	            labelTV.setText( R.string.error_no_contacts );
 	        	labelTV.setPadding(5,0,0,0);
 	
 	            tr.addView(labelTV);
