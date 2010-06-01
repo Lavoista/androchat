@@ -2,11 +2,9 @@ package com.androchat;
 
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
 
 public class AndroChat extends Activity {
