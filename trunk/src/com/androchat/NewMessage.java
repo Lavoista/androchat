@@ -62,7 +62,7 @@ public class NewMessage extends Activity{
 				public void onClick(View v) {
 					if (_spnrAddresseeName.getSelectedItemPosition()>-1)
 					{
-						if (_txtMessageBody.getText().length() > 140)
+						if (_txtMessageBody.getText().length() <= 140)
 						{
 							boolean bMsgSentSuccess = false;
 							try

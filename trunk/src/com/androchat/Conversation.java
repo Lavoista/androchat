@@ -308,7 +308,7 @@ public class Conversation extends Activity {
 		public void onClick(View v) {
 			if (m_strScreenName!=null && m_strScreenName!="")
 			{
-				if (_txtConversationMessageBody.getText().length() > 140)
+				if (_txtConversationMessageBody.getText().length() <= 140)
 				{
 					boolean bMsgSentSuccess = false;
 					try
