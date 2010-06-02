@@ -12,16 +12,11 @@ public class TwitterManagerTest {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if (args.length < 2) {
-            System.out.println("No TwitterID/Password specified.");
-            System.out.println(
-                "Usage: java com.androchat.TwitterManagerTest ID Password");
-            System.exit( -1);
-        }
 		System.out.println("Test");
 		try {
 			TwitterManager twitter = TwitterManager.getInstance();		
-			twitter.Connect(args[0], args[1]);
+			twitter.ConnectAuth("96330083-MIMDo1L2EtsOU1rymXtmPwaxLFrVc7i55PXMavfGY","pxKCw9vWDkNShbaII8wrOeQVIebKJPg6FJ1UZSEsqqw");
+			System.out.println("Connected User: " + twitter.getConnectedUserName());
 			List<User> arr = twitter.GetAllContacts(false);
 			for(User u : arr){
 				System.out.println("msg for " + u.getScreenName() + ":");
