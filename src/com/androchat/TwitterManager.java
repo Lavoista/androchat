@@ -18,11 +18,12 @@ public class TwitterManager {
 	// Consts
 	public  final String USER_NAME = "UserName"; 
 	public  final String SCREEN_NAME = "ScreenName"; 
+	private static final String JTWITTER_OAUTH_KEY = "ZWSmAuCT1ycu3mItLAD4A";
+	private static final String JTWITTER_OAUTH_SECRET = "NQg05yLDD6mnLSaVHUatXwDSSO0MDbb590s9dTVb8z8";
+	private static final String JTWITTER_CALLBACK_URL = "androchat://twitt";
 	
 	private static TwitterManager m_Instance;
 	private Twitter m_Twitter;
-	private String m_strUserName;
-	private String m_strPassword;
 	private int m_nInterval;
 	private boolean m_bSound;
 	private boolean m_bVibration;
@@ -33,6 +34,8 @@ public class TwitterManager {
 	private List<User> m_arrUsers;
 	private Timer m_Timer;
 	private INotifier m_Notifier;
+	private OAuthSignpostClient m_OAuthClient;
+	private String m_strUserName;
 	
 	private TwitterManager(){
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
@@ -40,6 +43,8 @@ public class TwitterManager {
 		m_nMaxSentMsgNum = 1;
 		m_Timer = new Timer();
 		m_nInterval = 0;
+		m_strUserName = "";
+		m_bConnected = false;
 	}
 	
 	public static TwitterManager getInstance(){
@@ -49,17 +54,49 @@ public class TwitterManager {
 	}
 	
 	public void Connect(String userName, String passWord) throws TwitterException{
-		m_bConnected = false;
-		m_strUserName = userName;
-		m_strPassword = passWord;
-		m_Twitter = new Twitter(m_strUserName,m_strPassword);
+		m_Twitter = new Twitter(userName, passWord);
 
 		SyncMessages();
         m_bConnected = true;
 	}
 	
+	public String GetAuthUrl(){
+		m_OAuthClient = new OAuthSignpostClient(JTWITTER_OAUTH_KEY, JTWITTER_OAUTH_SECRET, JTWITTER_CALLBACK_URL);
+		return m_OAuthClient.authorizeUrl();
+	}
+	
+	public void ConnectAuth(String accessToken, String accessTokenSecret){
+		m_OAuthClient = new OAuthSignpostClient(JTWITTER_OAUTH_KEY, JTWITTER_OAUTH_SECRET, accessToken, accessTokenSecret);
+		m_Twitter = new Twitter(null,m_OAuthClient);
+		SyncMessages();
+        m_bConnected = m_OAuthClient.canAuthenticate();
+	}
+	
+	public void ConnectAuth(String verifier) throws TwitterException{
+		m_OAuthClient.setAuthorizationCode(verifier);
+		m_Twitter = new Twitter(null,m_OAuthClient);
+		SyncMessages();
+        m_bConnected = m_OAuthClient.canAuthenticate();
+	}
+	
+	public String getAccessToken(){	
+		return m_OAuthClient.getAccessToken();
+	}
+	
+	public String getAccessTokenSecret(){
+		return m_OAuthClient.getAccessTokenSecret();
+	}
+
+	/**
+	 * @return Connected UserName screen name (not working if the user don't have messages)
+	 */
+	public String getConnectedUserName(){
+		return m_strUserName;
+	}
+	
 	public void Disconnect(){
 		m_bConnected = false;
+		m_strUserName = "";
 		m_Timer.cancel();
 	}
 	
@@ -127,7 +164,9 @@ public class TwitterManager {
 	}
 	
 	public void SendMessage(String strUserName, String strMsg) throws TwitterException{
-		GetMessagesForContact(strUserName).add(m_Twitter.sendMessage(strUserName, strMsg));
+		Message msg = m_Twitter.sendMessage(strUserName, strMsg);
+		m_nMaxSentMsgNum = msg.getId();
+		GetMessagesForContact(strUserName).add(msg);
 	}
 	
 	private List<Message> SyncMessages() throws TwitterException{
@@ -150,6 +189,10 @@ public class TwitterManager {
         	if(message.getId() > m_nMaxMsgNum){
         		m_nMaxMsgNum = message.getId();
         	}
+        	//HACK: that's the only way to get current user
+        	if(m_strUserName == ""){
+        		m_strUserName = message.getRecipient().getScreenName();
+        	}
         	m_hashMessages.get(strSenderScreenName).add(message);
         }
         m_Twitter.setSinceId(m_nMaxSentMsgNum);
@@ -162,6 +205,10 @@ public class TwitterManager {
         	}
         	if(message.getId() > m_nMaxSentMsgNum){
         		m_nMaxSentMsgNum = message.getId();
+        	}
+        	//HACK: that's the only way to get current user, in case user only have sent messages
+        	if(m_strUserName == ""){
+        		m_strUserName = message.getSender().getScreenName();
         	}
         	m_hashMessages.get(strRecipientScreenName).add(message);
         }

@@ -71,7 +71,6 @@ public class Notifications extends Service implements INotifier{
 				notification.audioStreamType = AudioManager.STREAM_RING;
 				Uri notificationSound = null;
 				notificationSound = Uri.fromFile(getFileStreamPath(TWEET_SOUND_FILENAME));
-				String str = notificationSound.getPath();
 				notification.sound = notificationSound;	
 			}
 			if (TwitterManager.getInstance().isVibration()) 

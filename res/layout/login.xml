@@ -3,36 +3,36 @@
 <LinearLayout android:id="@+id/LinearLayout01" android:layout_width="fill_parent" android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"><TableLayout android:id="@+id/TableLayout01" android:layout_height="wrap_content" android:layout_width="fill_parent"><TableRow android:id="@+id/TableRow01" android:layout_height="fill_parent" android:layout_width="fill_parent" android:gravity="right|center_vertical" android:minHeight="20px">
 </TableRow>
 
-<TableRow android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/TitleRow" android:gravity="center_horizontal"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtMain" android:text="AndroChat" android:textStyle="bold" android:textSize="25px"></TextView>
+<TableRow android:layout_height="fill_parent" android:layout_width="fill_parent" android:id="@+id/TitleRow" android:gravity="center"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/txtMain" android:text="AndroChat" android:textStyle="bold" android:textSize="25px" android:layout_gravity="center"></TextView>
 </TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
-</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/TimeInterval">
 
-<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Time Interval:" android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/lblIntervalTime"></TextView>
-
-<Spinner android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/interval"></Spinner>
-</TableRow>
 <TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
 
-</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/UserName"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="20px" android:paddingRight="20px" android:text="User Name:" android:id="@+id/lblUserName"></TextView>
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/LogIn" android:gravity="center" android:minHeight="40px">
 
-<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="150px" android:maxWidth="150px" android:id="@+id/txtUserName"></EditText>
+
+<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:background="@drawable/loginbutton" android:id="@+id/btnLogin" android:minHeight="40px"></Button>
 </TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space">
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Space" android:minHeight="10px">
 
-</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="30px" android:id="@+id/Password"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:paddingLeft="20px" android:paddingRight="20px" android:id="@+id/lblPassword" android:text="Password:"></TextView>
 
-<EditText android:layout_width="wrap_content" android:layout_height="wrap_content" android:minWidth="150px" android:maxWidth="150px" android:id="@+id/txtPassWord" android:inputType="textPassword"></EditText>
+
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/labelconnection" android:minHeight="25px" android:gravity="center"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Currenty connected: Or Cohen" android:paddingBottom="20px" android:id="@+id/lblConnectedUser"></TextView>
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TimeInterval" android:minHeight="15px">
+
+<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/lblIntervalTime" android:textStyle="bold" android:layout_gravity="left" android:text="Time Interval: " android:paddingLeft="30px" android:paddingBottom="10px"></TextView>
+
+
 </TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space"></TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/lblNotify" android:text="Notify with:" android:paddingLeft="20px" android:textStyle="bold"></TextView>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="20px" android:id="@+id/Space" android:paddingBottom="10px" android:gravity="center"><Spinner android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/interval"></Spinner></TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify" android:gravity="left"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/lblNotify" android:text="Notify with:" android:textStyle="bold" android:layout_gravity="left" android:paddingLeft="30px" android:paddingBottom="10px"></TextView>
 </TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify2" android:gravity="center" android:paddingLeft="20px"><CheckBox android:layout_height="wrap_content" android:id="@+id/chkSound" android:text="Sound" android:layout_width="wrap_content"></CheckBox>
-<CheckBox android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/chkVibaration" android:text="Vibration"></CheckBox>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Notify2"><CheckBox android:id="@+id/chkSound" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_gravity="right" android:text="Sound           "></CheckBox>
+<CheckBox android:id="@+id/chkVibaration" android:text="Vibration" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_gravity="left"></CheckBox>
 
-</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/space" android:minHeight="20px"></TableRow>
-<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Login" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnLogin" android:text="Log In"></Button>
-<Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/btnLogOut" android:text="Log Out"></Button>
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/space" android:minHeight="25px"></TableRow>
+<TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/Login" android:gravity="center"><Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Save" android:id="@+id/btnSave"></Button>
+
 </TableRow>
 
 </TableLayout>
