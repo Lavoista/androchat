@@ -1,5 +1,6 @@
 package com.androchat;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -41,7 +42,6 @@ public class TwitterManager {
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
 		m_nMaxMsgNum = 1;
 		m_nMaxSentMsgNum = 1;
-		m_Timer = new Timer();
 		m_nInterval = 0;
 		m_strUserName = "";
 		m_bConnected = false;
@@ -120,6 +120,7 @@ public class TwitterManager {
 			m_Timer.purge();
 		}
 		m_nInterval = interval;
+		m_Timer = new Timer();
 		m_Timer.scheduleAtFixedRate(new TimerTask() {
 			public void run() {
 				try{
