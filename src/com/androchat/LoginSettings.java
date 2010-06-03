@@ -16,6 +16,7 @@ import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -75,7 +76,7 @@ public class LoginSettings extends Activity {
 		Interval.setAdapter(a);
 
 		// Get Preferences
-		SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
+		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
 		Interval.setSelection(pref.getInt("interval", DEFAULT_INTERVAL_INDEX));
 		chkSound.setChecked(pref.getBoolean("sound", true));
 		chkVibaration.setChecked(pref.getBoolean("vibaration", true));
@@ -121,7 +122,7 @@ public class LoginSettings extends Activity {
 			public void onClick(View v) {
 				if(TwitterManager.getInstance().isConected()){
 					TwitterManager.getInstance().Disconnect();
-					Editor e = LoginSettings.this.getPreferences(Context.MODE_PRIVATE).edit();
+					Editor e = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
 					e.remove("token");
 					e.remove("tokensecret");
 					e.commit();
@@ -140,12 +141,12 @@ public class LoginSettings extends Activity {
 				boolean bSound = chkSound.isChecked();
 				boolean bVibaration = chkVibaration.isChecked();
 
-				TwitterManager.getInstance().setInterval(nInterval);
+				TwitterManager.getInstance().setInterval(5);
 				TwitterManager.getInstance().setSound(bSound);
 				TwitterManager.getInstance().setVibration(bVibaration);
 
 				// Save Preferences
-				Editor e = LoginSettings.this.getPreferences(Context.MODE_PRIVATE).edit();
+				Editor e = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
 				e.putString("token", TwitterManager.getInstance().getAccessToken());
 				e.putString("tokensecret", TwitterManager.getInstance().getAccessTokenSecret());
 				e.putInt("interval", nIntervalSelectedPosition);
