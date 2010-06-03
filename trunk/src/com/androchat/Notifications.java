@@ -1,5 +1,8 @@
 package com.androchat;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import winterwell.jtwitter.Twitter.Message;
@@ -65,12 +68,44 @@ public class Notifications extends Service implements INotifier{
 			PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
 			notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
 			
-			// Set vibrate and sound if neccesary
+			// Set vibrate and sound if necessary
 			if (TwitterManager.getInstance().isSound())
 			{
 				notification.audioStreamType = AudioManager.STREAM_RING;
 				Uri notificationSound = null;
 				notificationSound = Uri.fromFile(getFileStreamPath(TWEET_SOUND_FILENAME));
+				
+				// Check if succeed opening the file
+				boolean exists = false;
+				for (String i1 : fileList()) {
+					if (i1.equals(TWEET_SOUND_FILENAME)) {
+						exists = true;
+						break;
+					}
+				}
+				if (!exists) 
+				{
+					// This should only ever have to be done once per
+					// installation. If the file is ever changed then the
+					// filename must be changed ("tweet2.ogg" or whatever), and
+					// you must delete the files from old versions here.
+					try {
+						InputStream ris = getResources().openRawResource(
+							R.raw.tweet);
+						FileOutputStream fos = openFileOutput(
+							TWEET_SOUND_FILENAME, MODE_WORLD_READABLE);
+						byte[] buffer = new byte[8192];
+						int read;
+						while ((read = ris.read(buffer)) > 0) {
+							fos.write(buffer, 0, read);
+						}
+						ris.close();
+						fos.close();
+					} catch (IOException e) {
+						deleteFile(TWEET_SOUND_FILENAME);
+					}
+				}
+				
 				notification.sound = notificationSound;	
 			}
 			if (TwitterManager.getInstance().isVibration()) 
