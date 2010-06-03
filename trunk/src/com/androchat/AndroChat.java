@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 
 public class AndroChat extends Activity {
 	
@@ -23,7 +24,7 @@ public class AndroChat extends Activity {
         else
         {   
         	// Get Preferences
-    		SharedPreferences pref = this.getPreferences(Context.MODE_PRIVATE);
+    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
     		String strToken = pref.getString("token", "");
     		String strTokenSecret = pref.getString("tokensecret", "");
     		if(strToken != "" && strTokenSecret != ""){
