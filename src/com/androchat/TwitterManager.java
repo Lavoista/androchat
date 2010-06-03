@@ -54,10 +54,12 @@ public class TwitterManager {
 	}
 	
 	public void Connect(String userName, String passWord) throws TwitterException{
-		m_Twitter = new Twitter(userName, passWord);
-
-		SyncMessages();
-        m_bConnected = true;
+		if(!m_bConnected){
+			m_Twitter = new Twitter(userName, passWord);
+	
+			SyncMessages();
+	        m_bConnected = true;
+		}
 	}
 	
 	public String GetAuthUrl(){
@@ -66,17 +68,21 @@ public class TwitterManager {
 	}
 	
 	public void ConnectAuth(String accessToken, String accessTokenSecret){
-		m_OAuthClient = new OAuthSignpostClient(JTWITTER_OAUTH_KEY, JTWITTER_OAUTH_SECRET, accessToken, accessTokenSecret);
-		m_Twitter = new Twitter(null,m_OAuthClient);
-		SyncMessages();
-        m_bConnected = m_OAuthClient.canAuthenticate();
+		if(!m_bConnected){
+			m_OAuthClient = new OAuthSignpostClient(JTWITTER_OAUTH_KEY, JTWITTER_OAUTH_SECRET, accessToken, accessTokenSecret);
+			m_Twitter = new Twitter(null,m_OAuthClient);
+			SyncMessages();
+	        m_bConnected = m_OAuthClient.canAuthenticate();
+		}
 	}
 	
 	public void ConnectAuth(String verifier) throws TwitterException{
-		m_OAuthClient.setAuthorizationCode(verifier);
-		m_Twitter = new Twitter(null,m_OAuthClient);
-		SyncMessages();
-        m_bConnected = m_OAuthClient.canAuthenticate();
+		if(!m_bConnected){
+			m_OAuthClient.setAuthorizationCode(verifier);
+			m_Twitter = new Twitter(null,m_OAuthClient);
+			SyncMessages();
+	        m_bConnected = m_OAuthClient.canAuthenticate();
+		}
 	}
 	
 	public String getAccessToken(){	
@@ -97,7 +103,11 @@ public class TwitterManager {
 	public void Disconnect(){
 		m_bConnected = false;
 		m_strUserName = "";
-		m_Timer.cancel();
+		if(m_nInterval != 0){
+			m_Timer.cancel();
+			m_Timer.purge();
+			m_nInterval = 0;
+		}
 	}
 	
 	public void setNotifier(INotifier notifier){

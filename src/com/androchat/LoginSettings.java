@@ -49,7 +49,7 @@ public class LoginSettings extends Activity {
 		// The service will take care of rescheduling itself
 		// appropriately.
 		sendBroadcast(new Intent(LoginSettings.this, AlarmReceiver.class));
-
+		
 		// Get controls from the layout
 		this.btnLogIn = (Button)this.findViewById(R.id.btnLogin);
 		this.chkSound = (CheckBox)this.findViewById(R.id.chkSound);
@@ -79,16 +79,13 @@ public class LoginSettings extends Activity {
 		Interval.setSelection(pref.getInt("interval", DEFAULT_INTERVAL_INDEX));
 		chkSound.setChecked(pref.getBoolean("sound", true));
 		chkVibaration.setChecked(pref.getBoolean("vibaration", true));
-		String strToken = pref.getString("token", "");
-		String strTokenSecret = pref.getString("tokensecret", "");
-		if(strToken == "" || strTokenSecret == ""){
-			lblConnectedUser.setText("Not Connected");
-			btnSave.setEnabled(false);
-		}
-		else{
-			TwitterManager.getInstance().ConnectAuth(strToken, strTokenSecret);
+		if(TwitterManager.getInstance().isConected()){
 			lblConnectedUser.setText( MessageFormat.format(getString(R.string.connected_user), TwitterManager.getInstance().getConnectedUserName()));
 			btnSave.setEnabled(true);
+		}
+		else{
+			lblConnectedUser.setText("Not Connected");
+			btnSave.setEnabled(false);
 		}
 		
 
@@ -121,7 +118,16 @@ public class LoginSettings extends Activity {
 
 		// Define events to the btnLogin
 		this.btnLogIn.setOnClickListener(new OnClickListener() {	 
-			public void onClick(View v) {	
+			public void onClick(View v) {
+				if(TwitterManager.getInstance().isConected()){
+					TwitterManager.getInstance().Disconnect();
+					Editor e = LoginSettings.this.getPreferences(Context.MODE_PRIVATE).edit();
+					e.remove("token");
+					e.remove("tokensecret");
+					e.commit();
+					lblConnectedUser.setText("Not Connected");
+					btnSave.setEnabled(false);
+				}
 				LoginSettings.this.startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(TwitterManager.getInstance().GetAuthUrl())));
 			}
 		});
