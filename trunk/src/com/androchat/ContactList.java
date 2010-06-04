@@ -1,11 +1,14 @@
 package com.androchat;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import winterwell.jtwitter.TwitterException;
 import winterwell.jtwitter.Twitter.User;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -55,151 +58,162 @@ public class ContactList extends Activity {
 	          }
         });
 		
-        try
-        {
-			final List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
-	
-			if (followers!=null && followers.size()>0)
-			{
-				// Go through each item in the array
-		        for (int iCurrent = 0; iCurrent < followers.size(); iCurrent++)
+        
+
+		        try
 		        {
-		        	final int currentIndex = iCurrent;
-		        	
-		            // Create a Outer TableRow and give it an ID
-		            TableRow trOuter = new TableRow(this);
-		            trOuter.setId(1000+iCurrent);
-		            trOuter.setLayoutParams(new LayoutParams(
-		                    LayoutParams.FILL_PARENT,
-		                    LayoutParams.FILL_PARENT));
-		            trOuter.setMinimumHeight(50);
-		            
-		            trOuter.setClickable(true);
+					final List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
 
-		            
-		            trOuter.setOnClickListener(new OnClickListener() {
-
-						public void onClick(View v) {
-							
-				        	Intent iConversation = new Intent(ContactList.this, Conversation.class);
-				        	iConversation.putExtra(TwitterManager.getInstance().USER_NAME, followers.get(currentIndex).name);
-				        	iConversation.putExtra(TwitterManager.getInstance().SCREEN_NAME, followers.get(currentIndex).screenName);
-				            startActivity(iConversation);
-						}
-					});
-		            
-		            ImageView imageContact = new ImageView(this);
-		            imageContact.setId(7000+iCurrent);
-		            imageContact.setLayoutParams(new LayoutParams(
-		                    LayoutParams.WRAP_CONTENT,
-		                    LayoutParams.FILL_PARENT));
-		            imageContact.setImageResource(R.drawable.notification_icon_status_bar);
-		            imageContact.setPadding(5,2,0,0);
-		            
-		            
-		            TableLayout tlInner = new TableLayout(this);
-		            tlInner.setId(2000 + iCurrent);
-		            tlInner.setLayoutParams(new LayoutParams(
-		                    LayoutParams.WRAP_CONTENT,
-		                    LayoutParams.FILL_PARENT));
-		            
-		         // Create a TableRow and give it an ID
-		            TableRow trInner_Name = new TableRow(this);
-		            trInner_Name.setId(3000+iCurrent);
-		            trInner_Name.setLayoutParams(new LayoutParams(
-		                    LayoutParams.FILL_PARENT,
-		                    LayoutParams.FILL_PARENT));
-		            //trInner_Name.setMinimumHeight(30);
-		            
-		            TextView labelTV_Name = new TextView(this);
-		            labelTV_Name.setId(4000+iCurrent);
-		            labelTV_Name.setTextSize((float) 23.0);
-		            labelTV_Name.setLayoutParams(new LayoutParams(
-						                    LayoutParams.WRAP_CONTENT,
-						                    LayoutParams.WRAP_CONTENT));
-		            labelTV_Name.setGravity(Gravity.LEFT);
-		            labelTV_Name.setText( followers.get(iCurrent).name );
-		            labelTV_Name.setPadding(5,0,0,0);
-		            
-
-		            TableRow trInner_ScreenName = new TableRow(this);
-		            trInner_ScreenName.setId(5000+iCurrent);
-		            trInner_ScreenName.setLayoutParams(new LayoutParams(
-		                    LayoutParams.FILL_PARENT,
-		                    LayoutParams.FILL_PARENT));
-		            //trInner_ScreenName.setMinimumHeight(30);
-		            
-		            TextView labelTV_ScreenName = new TextView(this);
-		            labelTV_ScreenName.setId(6000+iCurrent);
-		            labelTV_ScreenName.setTextSize((float) 13.0);
-		            labelTV_ScreenName.setTextColor(Color.DKGRAY);
-		            labelTV_ScreenName.setLayoutParams(new LayoutParams(
-						                    LayoutParams.WRAP_CONTENT,
-						                    LayoutParams.WRAP_CONTENT));
-		            labelTV_ScreenName.setGravity(Gravity.LEFT);
-		        	labelTV_ScreenName.setText( "(" + followers.get(iCurrent).screenName + ")");
-		        	labelTV_ScreenName.setPadding(5,0,0,3);		        	
+					class ComparatorUser_ScreenName implements Comparator<User>
+					{
+					    public int compare(User u1, User u2) {
+					        return u1.screenName.compareToIgnoreCase( u2.screenName );
+					    }
+					}
+					
+					ComparatorUser_ScreenName cmprScreenName = new ComparatorUser_ScreenName();
+					
+					Collections.sort(followers, cmprScreenName);
+					
+					if (followers!=null && followers.size()>0)
+					{
+						// Go through each item in the array
+				        for (int iCurrent = 0; iCurrent < followers.size(); iCurrent++)
+				        {
+				        	final int currentIndex = iCurrent;
+				        	
+				            // Create a Outer TableRow and give it an ID
+				            TableRow trOuter = new TableRow(ContactList.this);
+				            trOuter.setId(1000+iCurrent);
+				            trOuter.setLayoutParams(new LayoutParams(
+				                    LayoutParams.FILL_PARENT,
+				                    LayoutParams.FILL_PARENT));
+				            trOuter.setMinimumHeight(50);
+				            
+				            trOuter.setClickable(true);
 		
-		            // Create a row seperator
-		            View lineSepartor = new View(this);
-		            lineSepartor.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 2));
-		            lineSepartor.setBackgroundColor(Color.LTGRAY);
-		        	
-	//	        	tr.addView(imageContact);
-		        	trInner_Name.addView(labelTV_Name);
-		        	trInner_ScreenName.addView(labelTV_ScreenName);
-
-		        	tlInner.addView(trInner_Name);
-		        	tlInner.addView(trInner_ScreenName);
-
-		        	trOuter.addView(imageContact);
-		        	trOuter.addView(tlInner);
+				            
+				            trOuter.setOnClickListener(new OnClickListener() {
 		
-		            // Add the TableRow to the TableLayout
-		            _tblContacts.addView(trOuter, new TableLayout.LayoutParams(
-		                    LayoutParams.FILL_PARENT,
-		                    LayoutParams.FILL_PARENT));
-		            
-		            if (iCurrent+1 < followers.size())
-		            {
-		            	_tblContacts.addView(lineSepartor);
-		            }
-		        }
+								public void onClick(View v) {
+									
+						        	Intent iConversation = new Intent(ContactList.this, Conversation.class);
+						        	iConversation.putExtra(TwitterManager.getInstance().USER_NAME, followers.get(currentIndex).name);
+						        	iConversation.putExtra(TwitterManager.getInstance().SCREEN_NAME, followers.get(currentIndex).screenName);
+						            startActivity(iConversation);
+								}
+							});
+				            
+				            ImageView imageContact = new ImageView(ContactList.this);
+				            imageContact.setId(7000+iCurrent);
+				            imageContact.setLayoutParams(new LayoutParams(
+				                    LayoutParams.WRAP_CONTENT,
+				                    LayoutParams.FILL_PARENT));
+				            imageContact.setImageResource(R.drawable.notification_icon_status_bar);
+				            imageContact.setPadding(5,2,0,0);
+				            
+				            
+				            TableLayout tlInner = new TableLayout(ContactList.this);
+				            tlInner.setId(2000 + iCurrent);
+				            tlInner.setLayoutParams(new LayoutParams(
+				                    LayoutParams.WRAP_CONTENT,
+				                    LayoutParams.FILL_PARENT));
+				            
+				            // Create a TableRow and give it an ID
+				            TableRow trInner_Name = new TableRow(ContactList.this);
+				            trInner_Name.setId(3000+iCurrent);
+				            trInner_Name.setLayoutParams(new LayoutParams(
+				                    LayoutParams.FILL_PARENT,
+				                    LayoutParams.FILL_PARENT));
+				            //trInner_Name.setMinimumHeight(30);
+				            
+				            TextView labelTV_Name = new TextView(ContactList.this);
+				            labelTV_Name.setId(4000+iCurrent);
+				            labelTV_Name.setTextSize((float) 23.0);
+				            labelTV_Name.setLayoutParams(new LayoutParams(
+								                    LayoutParams.WRAP_CONTENT,
+								                    LayoutParams.WRAP_CONTENT));
+				            labelTV_Name.setGravity(Gravity.LEFT);
+				            labelTV_Name.setText( followers.get(iCurrent).name );
+				            labelTV_Name.setPadding(5,0,0,0);
+				            
+		
+				            TableRow trInner_ScreenName = new TableRow(ContactList.this);
+				            trInner_ScreenName.setId(5000+iCurrent);
+				            trInner_ScreenName.setLayoutParams(new LayoutParams(
+				                    LayoutParams.FILL_PARENT,
+				                    LayoutParams.FILL_PARENT));
+				            //trInner_ScreenName.setMinimumHeight(30);
+				            
+				            TextView labelTV_ScreenName = new TextView(ContactList.this);
+				            labelTV_ScreenName.setId(6000+iCurrent);
+				            labelTV_ScreenName.setTextSize((float) 13.0);
+				            labelTV_ScreenName.setTextColor(Color.DKGRAY);
+				            labelTV_ScreenName.setLayoutParams(new LayoutParams(
+								                    LayoutParams.WRAP_CONTENT,
+								                    LayoutParams.WRAP_CONTENT));
+				            labelTV_ScreenName.setGravity(Gravity.LEFT);
+				        	labelTV_ScreenName.setText( "(" + followers.get(iCurrent).screenName + ")");
+				        	labelTV_ScreenName.setPadding(5,0,0,3);		        	
+				
+				            // Create a row seperator
+				            View lineSepartor = new View(ContactList.this);
+				            lineSepartor.setLayoutParams(new LayoutParams(LayoutParams.FILL_PARENT, 2));
+				            lineSepartor.setBackgroundColor(Color.LTGRAY);
+				        	
+				        	trInner_Name.addView(labelTV_Name);
+				        	trInner_ScreenName.addView(labelTV_ScreenName);
+		
+				        	tlInner.addView(trInner_Name);
+				        	tlInner.addView(trInner_ScreenName);
+		
+				        	trOuter.addView(imageContact);
+				        	trOuter.addView(tlInner);
+				
+				            // Add the TableRow to the TableLayout
+				            _tblContacts.addView(trOuter, new TableLayout.LayoutParams(
+				                    LayoutParams.FILL_PARENT,
+				                    LayoutParams.FILL_PARENT));
+				            
+				            if (iCurrent+1 < followers.size())
+				            {
+				            	_tblContacts.addView(lineSepartor);
+				            }
+				        }
+					
+					}
+					else
+					{
+						TableRow tr = new TableRow(ContactList.this);
+			            tr.setId(99998);
+			            tr.setLayoutParams(new LayoutParams(
+			                    LayoutParams.FILL_PARENT,
+			                    LayoutParams.FILL_PARENT));
+			            tr.setMinimumHeight(30);
+			            
+			            TextView labelTV = new TextView(ContactList.this);
+			            labelTV.setId(99999);
+			            labelTV.setTextSize((float) 25.0);
+			            labelTV.setLayoutParams(new LayoutParams(
+			                    LayoutParams.FILL_PARENT,
+			                    LayoutParams.FILL_PARENT));
+			        	labelTV.setGravity(Gravity.LEFT);
+			            labelTV.setText( R.string.error_no_contacts );
+			        	labelTV.setPadding(5,0,0,0);
 			
-			}
-			else
-			{
-				TableRow tr = new TableRow(this);
-	            tr.setId(99998);
-	            tr.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.FILL_PARENT));
-	            tr.setMinimumHeight(30);
-	            
-	            TextView labelTV = new TextView(this);
-	            labelTV.setId(99999);
-	            labelTV.setTextSize((float) 25.0);
-	            labelTV.setLayoutParams(new LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.FILL_PARENT));
-	        	labelTV.setGravity(Gravity.LEFT);
-	            labelTV.setText( R.string.error_no_contacts );
-	        	labelTV.setPadding(5,0,0,0);
-	
-	            tr.addView(labelTV);
-	
-	            // Add the TableRow to the TableLayout
-	            _tblContacts.addView(tr, new TableLayout.LayoutParams(
-	                    LayoutParams.FILL_PARENT,
-	                    LayoutParams.FILL_PARENT));
-			}
-        }
-        catch (TwitterException e) {
-
-    		new AlertDialog.Builder(ContactList.this)
-    	      .setMessage(e.getMessage())
-    	      .show();
-		}
+			            tr.addView(labelTV);
+			
+			            // Add the TableRow to the TableLayout
+			            _tblContacts.addView(tr, new TableLayout.LayoutParams(
+			                    LayoutParams.FILL_PARENT,
+			                    LayoutParams.FILL_PARENT));
+					}
+		        }
+		        catch (TwitterException e) {
+		
+		    		new AlertDialog.Builder(ContactList.this)
+		    	      .setMessage(e.getMessage())
+		    	      .show();
+				}
 	}
-
 }
