@@ -80,9 +80,6 @@ public class AndroChat extends Activity {
 					e.remove("token");
 					e.remove("tokensecret");
 					e.commit();
-    				new AlertDialog.Builder(AndroChat.this)
-    				.setMessage(ex.getMessage())
-    				.show();
     			}
 				dialogStartingApplication.dismiss();
 			}
