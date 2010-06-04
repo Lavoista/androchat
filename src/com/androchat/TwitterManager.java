@@ -208,7 +208,7 @@ public class TwitterManager {
         }
         m_Twitter.setSinceId(m_nMaxSentMsgNum);
         messages = m_Twitter.getDirectMessagesSent();
-        lstMsg.addAll(messages);
+        
         for (Message message : messages) {
         	String strRecipientScreenName = message.getRecipient().getScreenName();
         	if(!m_hashMessages.containsKey(strRecipientScreenName)){

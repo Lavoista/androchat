@@ -141,7 +141,7 @@ public class LoginSettings extends Activity {
 				boolean bSound = chkSound.isChecked();
 				boolean bVibaration = chkVibaration.isChecked();
 
-				TwitterManager.getInstance().setInterval(5);
+				TwitterManager.getInstance().setInterval(nInterval);
 				TwitterManager.getInstance().setSound(bSound);
 				TwitterManager.getInstance().setVibration(bVibaration);
 
