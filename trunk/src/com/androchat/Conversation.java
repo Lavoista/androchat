@@ -129,8 +129,6 @@ public class Conversation extends Activity {
 		this._btnConverstionSend = (Button)this.findViewById(R.id.btnConverstionSend);
 		this._txtConversationMessageBody = (EditText)this.findViewById(R.id.txtConversationMessageBody);
 		
-		// TODO : Shauli this is how you get parameters
-		// Use the const below and look for reference in Notifications.java
 		Bundle extra = getIntent().getExtras();
 		if (extra != null)
 		{
