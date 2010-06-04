@@ -44,8 +44,7 @@ public class Notifications extends Service implements INotifier{
 		mNotificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 		
 		for ( int i=0; i<lstMsg.size(); i++ )
-		{
-			// TODO : Should check here if the message wasn't by the connected user. 
+		{ 
 			Message msg = lstMsg.get(i);
 			
 			//Instantiate the Notification
@@ -53,6 +52,7 @@ public class Notifications extends Service implements INotifier{
 			CharSequence tickerText = "AndroChat - New message";
 			long when = System.currentTimeMillis();
 			Notification notification = new Notification(icon, tickerText, when);
+			notification.flags |= Notification.FLAG_AUTO_CANCEL;
 			
 			//Define the Notification's expanded message and Intent
 			Context context = getApplicationContext();

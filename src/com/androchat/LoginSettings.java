@@ -7,7 +7,6 @@ import oauth.signpost.OAuth;
 import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -28,7 +27,7 @@ import android.widget.TextView;
 
 public class LoginSettings extends Activity {
 
-	final static int[] INTERVALS = { 3, 5, 10, 15, 30, 60, 120 };
+	public final static int[] INTERVALS = { 3, 5, 10, 15, 30, 60, 120 };
 	final static long[] VIBRATION_PATTERN = new long[] { 0, 100, 60, 100 };
 	final static int DEFAULT_INTERVAL_INDEX = 4;
 
@@ -45,12 +44,6 @@ public class LoginSettings extends Activity {
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.login);
 
-		// Trigger the AlarmReceiver instead of starting the service
-		// directly so that the wake lock gets acquired.
-		// The service will take care of rescheduling itself
-		// appropriately.
-		sendBroadcast(new Intent(LoginSettings.this, AlarmReceiver.class));
-		
 		// Get controls from the layout
 		this.btnLogIn = (Button)this.findViewById(R.id.btnLogin);
 		this.chkSound = (CheckBox)this.findViewById(R.id.chkSound);

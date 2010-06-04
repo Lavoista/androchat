@@ -13,6 +13,7 @@ import winterwell.jtwitter.Twitter;
 import winterwell.jtwitter.TwitterException;
 import winterwell.jtwitter.Twitter.Message;
 import winterwell.jtwitter.Twitter.User;
+import android.util.Log;
 
 public class TwitterManager {
 
@@ -67,7 +68,7 @@ public class TwitterManager {
 		return m_OAuthClient.authorizeUrl();
 	}
 	
-	public void ConnectAuth(String accessToken, String accessTokenSecret){
+	public void ConnectAuth(String accessToken, String accessTokenSecret) throws TwitterException{
 		if(!m_bConnected){
 			m_OAuthClient = new OAuthSignpostClient(JTWITTER_OAUTH_KEY, JTWITTER_OAUTH_SECRET, accessToken, accessTokenSecret);
 			m_Twitter = new Twitter(null,m_OAuthClient);
@@ -103,6 +104,10 @@ public class TwitterManager {
 	public void Disconnect(){
 		m_bConnected = false;
 		m_strUserName = "";
+		m_hashMessages = new HashMap<String, ArrayList<Message>>();
+		m_arrUsers = null;
+		m_nMaxMsgNum = 1;
+		m_nMaxSentMsgNum = 1;
 		if(m_nInterval != 0){
 			m_Timer.cancel();
 			m_Timer.purge();
@@ -129,7 +134,9 @@ public class TwitterManager {
 						m_Notifier.Notify(lstMsg);
 					}
 				}
-				catch(TwitterException e){}
+				catch(TwitterException e){
+					Log.e("SyncMessage",e.getMessage());
+				}
 			}
 		}, m_nInterval*60000, m_nInterval*60000);
 	
@@ -182,6 +189,8 @@ public class TwitterManager {
 	
 	private List<Message> SyncMessages() throws TwitterException{
 		List<Message> lstMsg = new ArrayList<Message>();
+		long nMaxMsgNum = m_nMaxMsgNum;
+		long nMaxSentMsgNum = m_nMaxSentMsgNum;
 		
 		//TODO: caching
 		m_Twitter.setCount(200);
@@ -190,15 +199,16 @@ public class TwitterManager {
 		//m_Twitter.setMaxResults(1000);
 		
 		m_Twitter.setSinceId(m_nMaxMsgNum);
-		List<Message> messages = m_Twitter.getDirectMessages();
+		List<Message> messages;
+		messages = m_Twitter.getDirectMessages();
 		lstMsg.addAll(messages);
         for (Message message : messages) {
         	String strSenderScreenName = message.getSender().screenName;
         	if(!m_hashMessages.containsKey(strSenderScreenName)){
         		m_hashMessages.put(strSenderScreenName, new ArrayList<Message>());
         	}
-        	if(message.getId() > m_nMaxMsgNum){
-        		m_nMaxMsgNum = message.getId();
+        	if(message.getId() > nMaxMsgNum){
+        		nMaxMsgNum = message.getId();
         	}
         	//HACK: that's the only way to get current user
         	if(m_strUserName == ""){
@@ -207,21 +217,26 @@ public class TwitterManager {
         	m_hashMessages.get(strSenderScreenName).add(message);
         }
         m_Twitter.setSinceId(m_nMaxSentMsgNum);
-        messages = m_Twitter.getDirectMessagesSent();
-        
-        for (Message message : messages) {
-        	String strRecipientScreenName = message.getRecipient().getScreenName();
-        	if(!m_hashMessages.containsKey(strRecipientScreenName)){
-        		m_hashMessages.put(strRecipientScreenName, new ArrayList<Message>());
-        	}
-        	if(message.getId() > m_nMaxSentMsgNum){
-        		m_nMaxSentMsgNum = message.getId();
-        	}
-        	//HACK: that's the only way to get current user, in case user only have sent messages
-        	if(m_strUserName == ""){
-        		m_strUserName = message.getSender().getScreenName();
-        	}
-        	m_hashMessages.get(strRecipientScreenName).add(message);
+        try{
+	        messages = m_Twitter.getDirectMessagesSent();
+	        
+	        for (Message message : messages) {
+	        	String strRecipientScreenName = message.getRecipient().getScreenName();
+	        	if(!m_hashMessages.containsKey(strRecipientScreenName)){
+	        		m_hashMessages.put(strRecipientScreenName, new ArrayList<Message>());
+	        	}
+	        	if(message.getId() > nMaxSentMsgNum){
+	        		nMaxSentMsgNum = message.getId();
+	        	}
+	        	//HACK: that's the only way to get current user, in case user only have sent messages
+	        	if(m_strUserName == ""){
+	        		m_strUserName = message.getSender().getScreenName();
+	        	}
+	        	m_hashMessages.get(strRecipientScreenName).add(message);
+	        }
+        }
+        catch(TwitterException e){
+        	Log.e("SyncMessage", e.getMessage());
         }
         for(ArrayList<Message> arr : m_hashMessages.values()){
         	Collections.sort(arr, new Comparator<Message>() {
@@ -230,6 +245,8 @@ public class TwitterManager {
 				}
         	});
         }
+        m_nMaxMsgNum = nMaxMsgNum;
+        m_nMaxSentMsgNum = nMaxSentMsgNum;
         return lstMsg;
 	}
 }
