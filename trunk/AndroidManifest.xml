@@ -29,7 +29,7 @@
 			</intent-filter>
 		</activity>
 		<activity android:screenOrientation="portrait" android:name="Conversation"
-			android:label="Conversation Screen"></activity>
+			android:label="Conversation Screen" android:windowSoftInputMode="stateHidden"></activity>
 		<activity android:label="Contact List" android:name="ContactList"></activity>
 		<service android:name=".Notifications" android:permission="com.androchat.privateservices" />
 		<receiver android:name=".AlarmReceiver" />
