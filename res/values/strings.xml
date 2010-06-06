@@ -11,7 +11,7 @@
 	<string name="error_common_prefix">Error Ocoured</string>
 	<string name="message_send_success">Message was sent !</string>
 	<string name="error_no_contacts">There are no contacts for current user</string>
-	<string name="error_no_messages">There are no message between you and </string>
+	<string name="error_no_messages_on_conversation">There are no message between you and</string>
 	<string name="error_choose_contact">Please choose a contact</string>
 <string name="error_message_empty">Message is empty !\nPlease write a message and than press  on send.</string>
 </resources>

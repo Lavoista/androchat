@@ -1,7 +1,6 @@
 package com.androchat;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import winterwell.jtwitter.TwitterException;
@@ -15,6 +14,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -23,6 +23,7 @@ import android.widget.TableRow.LayoutParams;
 public class Conversation extends Activity {
 
 	// Data Members
+	private ScrollView  _scvMessageScroll;
 	private TableLayout _tblMessages;
 	private TextView 	_tvConversationName;
 	private Button		_btnConverstionSend;
@@ -33,87 +34,105 @@ public class Conversation extends Activity {
 	
 	private String getMsgDate( Date dt )
 	{
+		Date dtNow = new Date();
 		String strDate;
-		Date dtDiffNow = getDateDiff(dt);
 
-		if (dtDiffNow.getDay() == 0)
+		String sMinutes;
+		String sOnTime;
+		String sHour;
+		String sDay;
+		String sMonth;
+		String sYear;
+
+		int nDay = dt.getDay()+1;
+		int nMonth = dt.getMonth()+1;
+		int nYear = (dt.getYear()-100);
+
+		if (dt.getMinutes()<10)
+			sMinutes = "0" + dt.getMinutes();
+		else
+			sMinutes = ""+dt.getMinutes();
+		
+		if (dt.getHours()<10)
+			sHour = "0" + dt.getHours();
+		else
+			sHour = ""+dt.getHours();
+
+		if (nDay<10)
+			sDay = "0" + nDay;
+		else
+			sDay = ""+nDay;
+
+		if (nMonth<10)
+			sMonth = "0" + nMonth;
+		else
+			sMonth = ""+nMonth;
+
+		if (nYear<10)
+			sYear = "0" + nYear;
+		else
+			sYear = "" + nYear;
+		
+		sOnTime =  ", on " + sHour + ":" + sMinutes;
+		
+		//Date dtDiffNow = getDateDiff(dt);
+		
+		long lDiff = getDateDiff(dt);
+
+		long lYearsSince = 		(lDiff / (1000 * 60 * 60 * 24 * 30 * 12));
+		long lMonthsSince = 	(lDiff / (1000 * 60 * 60 * 24 * 30));
+		long lDaysSince = 		(lDiff / (1000 * 60 * 60 * 24));
+		long lHoursSince = 		(lDiff / (1000 * 60 * 60));
+		long lMinutesSince = 	(lDiff / (1000 * 60));
+		long lSecondsSince = 	(lDiff / (1000));
+		
+		if (lDaysSince == 0)
 		{
-			if (dtDiffNow.getHours() < 1)
+			if (lHoursSince == 0)
 			{
-				if (dtDiffNow.getMinutes()==0)
+				if (lMinutesSince == 0)
 				{
-					strDate = "("+dtDiffNow.getSeconds() + " seconds ago)";
+					strDate = lSecondsSince + " seconds ago";
 				}
 				else
 				{
-					strDate = "("+dtDiffNow.getMinutes() + " minutes ago)";
+					strDate = lMinutesSince + " minutes ago";
 				}
 			}
 			else
 			{
-				strDate = "("+dtDiffNow.getHours() + " hours ago)";
+				strDate = lHoursSince + " hours ago" + sOnTime;
 			}
 		}
 		else
 		{
-			if (dtDiffNow.getDay() < 30)
+			if (lDaysSince < 7)
 			{
-				strDate = "("+dtDiffNow.getDate() + " days ago)";
+				strDate = lDaysSince + " days ago" + sOnTime;
 			}
 			else
-			{
-				int nDay = dt.getDay() + 1;
-				int nMonth = dt.getMonth() + 1;
-				int nYear = dt.getYear() + 1;
-				String sDay;
-				String sMonth;
-				String sYear;
-
-				if (nDay<10)
-					sDay = "0" + nDay;
-				else
-					sDay = ""+nDay;
-
-				if (nMonth<10)
-					sMonth = "0" + nMonth;
-				else
-					sMonth = ""+nMonth;
-
-				if (nYear<10)
-					sYear = "0" + nYear;
-				else
-					sYear = ""+nYear;
-					
+			{				
 				
-				if (dtDiffNow.getYear() < 1)
+				if (dtNow.getYear() == dt.getYear())
 				{
-					strDate = "("+sDay + "/" + sMonth + " on " + dt.getHours() + ":" + dt.getMinutes()  + ")";
+					strDate = sDay + "/" + sMonth + sOnTime;
 				}
 				else
 				{
-					strDate = "("+sDay + "/" + sMonth + "/" + sYear+ " on " + dt.getHours() + ":" + dt.getMinutes()  + ")";	
+					strDate = sDay + "/" + sMonth + "/" + sYear+ sOnTime;	
 				}
 			}
 		}
 		
-		return strDate;
+		return   "(" + strDate  + ")";
 		
 	}
 
-	private Date getDateDiff(Date dt) {
-		Calendar cal = Calendar.getInstance();
-
-		cal.add(Calendar.YEAR, (-1*(dt.getYear()) ));
-		cal.add(Calendar.MONTH, (-1*(dt.getMonth())) );
-		cal.add(Calendar.DATE, (-1*(dt.getDate())) );
-		cal.add(Calendar.HOUR, (-1*(dt.getHours()) ));
-		cal.add(Calendar.MINUTE, (-1*(dt.getMinutes())) );
-		cal.add(Calendar.SECOND, (-1*(dt.getSeconds())) );
-
-		Date dtDiffNow = new Date(cal.getTimeInMillis());
+	private long getDateDiff(Date dt) {
 		
-		return dtDiffNow;
-		
+		Date dtNow = new Date();
+		long diff =  dtNow.getTime() - dt.getTime();
+		return diff;
 	}
 	
 	@Override
@@ -122,8 +141,9 @@ public class Conversation extends Activity {
 
 		super.onCreate(savedInstanceState);
 		this.setContentView(R.layout.conversation);
-
+		
 		this._tblMessages = (TableLayout)this.findViewById(R.id.tblMessages);
+		this._scvMessageScroll = (ScrollView)this.findViewById(R.id.scvMessageScroll);
 		this._tvConversationName = (TextView)this.findViewById(R.id.tvConversationName);
 
 		this._btnConverstionSend = (Button)this.findViewById(R.id.btnConverstionSend);
@@ -138,11 +158,11 @@ public class Conversation extends Activity {
 			try
 			{
 				ArrayList<Message> conversionMsgs = TwitterManager.getInstance().GetMessagesForContact(m_strScreenName);
+
+				_tvConversationName.setText( "Showing Conversation with " + m_strUserName + " :" );
 				
 				if (conversionMsgs.size()>0)
 				{
-					_tvConversationName.setText( "Showing Conversation with " + m_strUserName + " :" );
-					
 					// Go through each item in the array
 			        for (int iCurrent = 0; iCurrent < conversionMsgs.size(); iCurrent++)
 			        {
@@ -252,9 +272,14 @@ public class Conversation extends Activity {
 			            _tblMessages.addView(trOuter, new TableLayout.LayoutParams(
 			                    LayoutParams.FILL_PARENT,
 			                    LayoutParams.FILL_PARENT));
-			            
-			            _tblMessages.addView(lineSepartor);
+
+			            if (iCurrent+1 < conversionMsgs.size())
+			            {
+			            	_tblMessages.addView(lineSepartor);
+			            }
 			        }
+//			        _scvMessageScroll.setSmoothScrollingEnabled(true);
+//			        _scvMessageScroll.scrollBy(0, conversionMsgs.size() * 30);
 				}
 		        else
 		        {
@@ -273,7 +298,7 @@ public class Conversation extends Activity {
 		                    LayoutParams.FILL_PARENT,
 		                    LayoutParams.FILL_PARENT));
 		        	labelTV.setGravity(Gravity.LEFT);
-		            labelTV.setText( R.string.error_no_messages );
+		            labelTV.setText( R.string.error_no_messages_on_conversation + " " + m_strScreenName );
 		        	labelTV.setPadding(5,0,0,0);
 		            labelTV.setWidth(270);
 		
@@ -308,28 +333,38 @@ public class Conversation extends Activity {
 			{
 				if (_txtConversationMessageBody.getText().length() <= 140)
 				{
-					boolean bMsgSentSuccess = false;
-					try
+					if (_txtConversationMessageBody.getText().length() > 0)
 					{
-						TwitterManager.getInstance().SendMessage(m_strScreenName, _txtConversationMessageBody.getText().toString());
-						bMsgSentSuccess = true;	
-					}
-					catch (TwitterException ex)
-					{
-		        		new AlertDialog.Builder(Conversation.this)
-		        	      .setMessage(R.string.error_common_prefix + " :\n" + ex.getMessage())
-		        	      .show();		
-					}
-					
-					if (bMsgSentSuccess)
-					{
-		        		new AlertDialog.Builder(Conversation.this)
-		        	      .setMessage(R.string.message_send_success)
-		        	      .show();	
-		        		
-						Intent iSettings = new Intent(Conversation.this, ContactList.class);
-						startActivity(iSettings);
-						finish();
+						
+						boolean bMsgSentSuccess = false;
+						try
+						{
+							TwitterManager.getInstance().SendMessage(m_strScreenName, _txtConversationMessageBody.getText().toString());
+							bMsgSentSuccess = true;	
+						}
+						catch (TwitterException ex)
+						{
+			        		new AlertDialog.Builder(Conversation.this)
+			        	      .setMessage(R.string.error_common_prefix + " :\n" + ex.getMessage())
+			        	      .show();		
+						}
+						
+						if (bMsgSentSuccess)
+						{
+			        		new AlertDialog.Builder(Conversation.this)
+			        	      .setMessage(R.string.message_send_success)
+			        	      .show();	
+			        		
+							Intent iSettings = new Intent(Conversation.this, ContactList.class);
+							startActivity(iSettings);
+							finish();
+						}
+						else
+						{
+			        		new AlertDialog.Builder(Conversation.this)
+			        	      .setMessage(R.string.error_message_empty)
+			        	      .show();						
+						}
 					}
 				}
 				else
