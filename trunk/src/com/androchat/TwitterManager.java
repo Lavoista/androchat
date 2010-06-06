@@ -33,7 +33,8 @@ public class TwitterManager {
 	private long m_nMaxMsgNum;
 	private long m_nMaxSentMsgNum;
 	private HashMap<String, ArrayList<Message>> m_hashMessages;
-	private List<User> m_arrUsers;
+	private List<User> m_arrFollowers;
+	private List<User> m_arrContacts;
 	private Timer m_Timer;
 	private INotifier m_Notifier;
 	private OAuthSignpostClient m_OAuthClient;
@@ -41,6 +42,7 @@ public class TwitterManager {
 	
 	private TwitterManager(){
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
+		m_arrContacts = new ArrayList<User>();
 		m_nMaxMsgNum = 1;
 		m_nMaxSentMsgNum = 1;
 		m_nInterval = 0;
@@ -105,7 +107,8 @@ public class TwitterManager {
 		m_bConnected = false;
 		m_strUserName = "";
 		m_hashMessages = new HashMap<String, ArrayList<Message>>();
-		m_arrUsers = null;
+		m_arrFollowers = null;
+		m_arrContacts = new ArrayList<User>();
 		m_nMaxMsgNum = 1;
 		m_nMaxSentMsgNum = 1;
 		if(m_nInterval != 0){
@@ -166,12 +169,16 @@ public class TwitterManager {
 		return m_bConnected;
 	}
 
-	public List<User> GetAllContacts(boolean useCache) throws TwitterException{
-		if(!useCache || m_arrUsers == null){
+	public List<User> GetAllFollowers(boolean useCache) throws TwitterException{
+		if(!useCache || m_arrFollowers == null){
 			//TODO: caching
-			m_arrUsers = m_Twitter.getFollowers();
+			m_arrFollowers = m_Twitter.getFollowers();
 		}
-		return m_arrUsers;
+		return m_arrFollowers;
+	}
+	
+	public List<User> GetAllContacts(){
+		return m_arrContacts;
 	}
 	
 	public ArrayList<Message> GetMessagesForContact(String strUserName) throws TwitterException{
@@ -184,7 +191,16 @@ public class TwitterManager {
 	public void SendMessage(String strUserName, String strMsg) throws TwitterException{
 		Message msg = m_Twitter.sendMessage(strUserName, strMsg);
 		m_nMaxSentMsgNum = msg.getId();
-		GetMessagesForContact(strUserName).add(msg);
+		if(!m_hashMessages.containsKey(strUserName)){
+			m_hashMessages.put(strUserName, new ArrayList<Message>());
+			try{
+				m_arrContacts.add(m_Twitter.getUser(strUserName));
+			}
+			catch(Exception e){
+				Log.e("SendMessage", e.getMessage());
+			}
+		}
+		m_hashMessages.get(strUserName).add(msg);
 	}
 	
 	private List<Message> SyncMessages(boolean bFirstSync) throws TwitterException{
@@ -207,6 +223,7 @@ public class TwitterManager {
 	        	String strSenderScreenName = message.getSender().screenName;
 	        	if(!m_hashMessages.containsKey(strSenderScreenName)){
 	        		m_hashMessages.put(strSenderScreenName, new ArrayList<Message>());
+	        		m_arrContacts.add(message.getSender());
 	        	}
 	        	if(message.getId() > nMaxMsgNum){
 	        		nMaxMsgNum = message.getId();
@@ -217,6 +234,7 @@ public class TwitterManager {
 	        	}
 	        	m_hashMessages.get(strSenderScreenName).add(message);
 	        }
+	        m_nMaxMsgNum = nMaxMsgNum;
 	        m_Twitter.setSinceId(m_nMaxSentMsgNum);
 	        messages = m_Twitter.getDirectMessagesSent();
 	        
@@ -224,6 +242,7 @@ public class TwitterManager {
 	        	String strRecipientScreenName = message.getRecipient().getScreenName();
 	        	if(!m_hashMessages.containsKey(strRecipientScreenName)){
 	        		m_hashMessages.put(strRecipientScreenName, new ArrayList<Message>());
+	        		m_arrContacts.add(message.getRecipient());
 	        	}
 	        	if(message.getId() > nMaxSentMsgNum){
 	        		nMaxSentMsgNum = message.getId();
@@ -234,6 +253,7 @@ public class TwitterManager {
 	        	}
 	        	m_hashMessages.get(strRecipientScreenName).add(message);
 	        }
+	        m_nMaxSentMsgNum = nMaxSentMsgNum;
         }
         catch(TwitterException e){
         	Log.e("SyncMessage", e.getMessage());
@@ -248,8 +268,7 @@ public class TwitterManager {
 				}
         	});
         }
-        m_nMaxMsgNum = nMaxMsgNum;
-        m_nMaxSentMsgNum = nMaxSentMsgNum;
+        
         return lstMsg;
 	}
 }

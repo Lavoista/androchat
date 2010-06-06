@@ -298,7 +298,7 @@ public class Conversation extends Activity {
 		                    LayoutParams.FILL_PARENT,
 		                    LayoutParams.FILL_PARENT));
 		        	labelTV.setGravity(Gravity.LEFT);
-		            labelTV.setText( R.string.error_no_messages_on_conversation + " " + m_strScreenName );
+		            labelTV.setText(getString(R.string.error_no_messages_on_conversation) + " " + m_strScreenName );
 		        	labelTV.setPadding(5,0,0,0);
 		            labelTV.setWidth(270);
 		

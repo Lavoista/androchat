@@ -222,7 +222,7 @@ public class ContactList extends Activity {
 			try
 	        {
 	    		
-				followers = TwitterManager.getInstance().GetAllContacts(true);
+				followers = TwitterManager.getInstance().GetAllContacts();
 	
 				class ComparatorUser_ScreenName implements Comparator<User>
 				{
