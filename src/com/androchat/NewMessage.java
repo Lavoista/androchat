@@ -34,7 +34,7 @@ public class NewMessage extends Activity{
 		_spnrAddresseeName = (Spinner) findViewById(R.id.spnrAddresseeName);
 
 			List<String> listUsers = new ArrayList<String>();
-			List<User> followers = TwitterManager.getInstance().GetAllContacts(true);
+			List<User> followers = TwitterManager.getInstance().GetAllFollowers(true);
 			 
 			class ComparatorUser_ScreenName implements Comparator<User>
 			{

@@ -23,7 +23,7 @@ public class TwitterManagerTest implements INotifier{
 			twitter.setInterval(1);
 			
 			System.out.println("Connected User: " + twitter.getConnectedUserName());
-			List<User> arr = twitter.GetAllContacts(false);
+			List<User> arr = twitter.GetAllContacts();
 			for(User u : arr){
 				System.out.println("msg for " + u.getScreenName() + ":");
 				//twitter.SendMessage(u.getScreenName(), "Test");
