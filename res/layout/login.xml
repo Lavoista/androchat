@@ -17,7 +17,7 @@
 
 
 
-</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/labelconnection" android:minHeight="25px" android:gravity="center"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Currenty connected: Or Cohen" android:paddingBottom="20px" android:id="@+id/lblConnectedUser"></TextView>
+</TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/labelconnection" android:minHeight="25px" android:gravity="center"><TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Currenty connected:" android:paddingBottom="20px" android:id="@+id/lblConnectedUser"></TextView>
 </TableRow><TableRow android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/TimeInterval" android:minHeight="15px">
 
 <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/lblIntervalTime" android:textStyle="bold" android:layout_gravity="left" android:text="Time Interval: " android:paddingLeft="30px" android:paddingBottom="10px"></TextView>
