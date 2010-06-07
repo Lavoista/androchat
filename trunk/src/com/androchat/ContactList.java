@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.TableRow.LayoutParams;
 
 public class ContactList extends Activity {
@@ -57,7 +58,8 @@ public class ContactList extends Activity {
 	          }
         });
 
-        new GetContactsDataTask().execute();
+		Bundle extra = this.getIntent().getExtras();
+        new GetContactsDataTask().execute(extra);
         
 	}
 	
@@ -187,7 +189,7 @@ public class ContactList extends Activity {
                     LayoutParams.FILL_PARENT,
                     LayoutParams.FILL_PARENT));
         	labelTV.setGravity(Gravity.LEFT);
-            labelTV.setText( R.string.error_no_contacts );
+            labelTV.setText( getString(R.string.error_no_contacts) );
         	labelTV.setPadding(5,0,0,0);
 
             tr.addView(labelTV);
@@ -200,12 +202,17 @@ public class ContactList extends Activity {
 	}
 
 
-	private class GetContactsDataTask extends AsyncTask<String, Void, Void> {
+	private class GetContactsDataTask extends AsyncTask<Bundle, Void, Void> {
       
 		ProgressDialog dialogGetContacts = new ProgressDialog(ContactList.this);
         List<User> followers = null;
         boolean bEx_Exception = false;
         boolean bEx_TwitterException = false;
+        
+        boolean bBackFromSendMessage = false;
+        String userNameOnMsgSuccess = "";
+        
+        
 
 		
 		// can use UI thread here
@@ -217,7 +224,7 @@ public class ContactList extends Activity {
 		}
 		
 		// automatically done on worker thread (separate from UI thread)
-		protected Void doInBackground(final String... args) {
+		protected Void doInBackground(final Bundle... args) {
 
 			try
 	        {
@@ -235,7 +242,14 @@ public class ContactList extends Activity {
 				
 				Collections.sort(followers, cmprScreenName);
 
-	
+				if (args[0] != null)
+				{
+					if ( args[0].containsKey(TwitterManager.getInstance().MESSAGE_SUCCESS) )
+					{
+						bBackFromSendMessage = true;
+						userNameOnMsgSuccess = args[0].getString(TwitterManager.getInstance().MESSAGE_SUCCESS).trim();
+					}
+				}
 	        }
 	        catch (TwitterException e) {
 	        	
@@ -292,6 +306,13 @@ public class ContactList extends Activity {
 					 }
 				}
 			}
+
+			if (bBackFromSendMessage == true && userNameOnMsgSuccess.length()>0)
+			{
+				Toast toast = Toast.makeText(getApplicationContext(), "Message was sent successfuly to " + userNameOnMsgSuccess ,Toast.LENGTH_LONG);
+				toast.show();
+			}
+			
 		}
 	}
 

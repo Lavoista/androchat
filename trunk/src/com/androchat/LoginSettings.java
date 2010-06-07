@@ -125,11 +125,7 @@ public class LoginSettings extends Activity {
 		                "Starting Browser.\nPlease wait...",true);
 		    	dialogLogIn.setCancelable(true);
 		    	dialogLogIn.setCanceledOnTouchOutside(false);
-	
-		    	//Handler handler=new Handler();
 
-		    	//handler.post(new Runnable(){public void run(){dialogDisconnect.dismiss();}});
-		    	
 		    	new Thread()
 		    	{
 	                public void run() 
@@ -168,38 +164,23 @@ public class LoginSettings extends Activity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Uri uri = this.getIntent().getData();  
-		if (uri != null && uri.toString().startsWith("androchat://twitt")) {
-			try{
-				TwitterManager.getInstance().ConnectAuth(uri.getQueryParameter(OAuth.OAUTH_VERIFIER));
-				lblConnectedUser.setText( MessageFormat.format(getString(R.string.connected_user), TwitterManager.getInstance().getConnectedUserName()));
-				btnSave.setEnabled(true);
-			}
-			catch(TwitterException e){
-				new AlertDialog.Builder(LoginSettings.this)
-				.setMessage(e.getMessage())
-				.show();				
-			}
-		}
+		Uri uri = this.getIntent().getData(); 
+		new OnResumeDataTask().execute(uri);
 	}
-
-	
-	
 
 	private class LoginAndSaveDataTask extends AsyncTask<String, Void, Void> {
 
-		ProgressDialog dialogGetContacts = new ProgressDialog(LoginSettings.this);
+		ProgressDialog dialogLoginAndSave = new ProgressDialog(LoginSettings.this);
         boolean bEx_Exception = false;
         boolean bEx_TwitterException = false;
         
 		@Override
 		protected void onPreExecute() {
-			// TODO Auto-generated method stub
-			super.onPreExecute();
-			this.dialogGetContacts.setMessage("Connecting to Twitter.\nPlease wait...");
-			this.dialogGetContacts.setCancelable(true);
-			this.dialogGetContacts.setCanceledOnTouchOutside(false);
-			this.dialogGetContacts.show();
+			
+			this.dialogLoginAndSave.setMessage("Connecting to Twitter.\nPlease wait...");
+			this.dialogLoginAndSave.setCancelable(true);
+			this.dialogLoginAndSave.setCanceledOnTouchOutside(false);
+			this.dialogLoginAndSave.show();
 		}
 		
 		@Override
@@ -240,10 +221,8 @@ public class LoginSettings extends Activity {
 		@Override
 		protected void onPostExecute(final Void result) {
 			
-			super.onPostExecute(result);
-
-			if (this.dialogGetContacts.isShowing()) {
-				this.dialogGetContacts.dismiss();
+			if (this.dialogLoginAndSave.isShowing()) {
+				this.dialogLoginAndSave.dismiss();
 			}
 			
 			if (bEx_Exception == false && bEx_TwitterException == false)
@@ -274,11 +253,93 @@ public class LoginSettings extends Activity {
 	
 		@Override
 		protected void onCancelled() {
-			// TODO Auto-generated method stub
-			super.onCancelled();
 			
     		new AlertDialog.Builder(LoginSettings.this)
-    	      .setMessage("Operation Canceled.")
+    	      .setMessage("Operation Canceled")
+    	      .show();
+		}
+	}
+
+	private class OnResumeDataTask extends AsyncTask<Uri, Void, Void> 
+	{
+		
+		ProgressDialog dialogOnResume = new ProgressDialog(LoginSettings.this);
+        boolean bEx_Exception = false;
+        boolean bEx_TwitterException = false;
+        TwitterException tex = null;
+        Exception ex = null;
+        
+		@Override
+		protected void onPreExecute() {
+
+			this.dialogOnResume.setMessage("Getting details from browser");
+			this.dialogOnResume.setCancelable(true);
+			this.dialogOnResume.setCanceledOnTouchOutside(false);
+			this.dialogOnResume.show();
+		}
+		
+		@Override
+		protected Void doInBackground(Uri... params) {
+
+			if (params[0] != null && params[0].toString().startsWith("androchat://twitt")) {
+				try{
+					TwitterManager.getInstance().ConnectAuth(params[0].getQueryParameter(OAuth.OAUTH_VERIFIER));
+				}
+				catch(TwitterException e){
+					bEx_TwitterException = true;
+					tex = e;			
+				}
+				catch (Exception e)
+				{
+					bEx_Exception = true;
+					ex = e;
+				}
+			}
+			
+			return null;
+		}
+		
+		@Override
+		protected void onPostExecute(Void result) {
+
+			if (this.dialogOnResume.isShowing()) {
+				this.dialogOnResume.dismiss();
+			}
+			
+			if (bEx_Exception == false && bEx_TwitterException == false)
+			{
+				lblConnectedUser.setText( MessageFormat.format(getString(R.string.connected_user), 
+						TwitterManager.getInstance().getConnectedUserName()));
+				btnSave.setEnabled(true);
+			}
+			else
+			{	
+				btnSave.setEnabled(false);
+			
+				if (bEx_TwitterException == true)
+				{
+					new AlertDialog.Builder(LoginSettings.this)
+					.setMessage(tex.getMessage())
+					.show();
+				}
+				else
+				{
+					 if (bEx_Exception == true)
+					 {
+							new AlertDialog.Builder(LoginSettings.this)
+							.setMessage(ex.getMessage())
+							.show();
+					 }
+				}
+			}
+				
+		}
+		
+		@Override
+		protected void onCancelled() {
+
+    		new AlertDialog.Builder(LoginSettings.this)
+    	      .setMessage("Operation Canceled")
     	      .show();
 		}
 	}

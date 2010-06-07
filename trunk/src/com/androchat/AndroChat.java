@@ -1,10 +1,18 @@
 package com.androchat;
 
+import winterwell.jtwitter.TwitterException;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences.Editor;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 
@@ -22,67 +30,109 @@ public class AndroChat extends Activity {
 		// appropriately.
 		sendBroadcast(new Intent(this, AlarmReceiver.class));
 		
-        final ProgressDialog dialogStartingApplication = ProgressDialog.show(AndroChat.this, "", 
-                "Starting AndroChat.\nChecking latest settings.\nPlease wait...",true);
-        dialogStartingApplication.setCancelable(true);
-        dialogStartingApplication.setCanceledOnTouchOutside(false);
+		
+			new AndroChatStartDataTask().execute();
+    }
+    
+    private class AndroChatStartDataTask extends AsyncTask<String, Void, Void>
+    {
+    	boolean isUserAlreadySignedIn = false;
+
+		ProgressDialog dialogStartAndroChat = new ProgressDialog(AndroChat.this);
+        boolean bEx_Exception = false;
+        boolean bEx_TwitterException = false;
+        TwitterException tex = null;
+        Exception gex = null;
     	
-    	//dialog.show();
-        
-		new Thread() 
-		{
-			public void run() 
+    	@Override
+    	protected void onPreExecute() {
+
+			this.dialogStartAndroChat.setTitle("Starting AndroChat");
+			this.dialogStartAndroChat.setMessage("Checking latest settings.\nPlease wait...");
+			this.dialogStartAndroChat.setCancelable(true);
+			this.dialogStartAndroChat.setCanceledOnTouchOutside(false);
+			this.dialogStartAndroChat.show();
+    	}
+    	
+    	@Override
+    	protected Void doInBackground(String... params) {
+
+    		try
 			{
-				try
-				{
-			        boolean isUserAlreadySignedIn = false;
-			        
-			        if (TwitterManager.getInstance().isConected())
-			        {
-			        	isUserAlreadySignedIn = true;
+		        if (TwitterManager.getInstance().isConected())
+		        {
+		        	isUserAlreadySignedIn = true;
+		        }
+		        else
+		        {   
+		        	// Get Preferences
+		    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+		    		String strToken = pref.getString("token", "");
+		    		String strTokenSecret = pref.getString("tokensecret", "");
+		    		if(strToken != "" && strTokenSecret != "")
+		    		{
+		    			TwitterManager.getInstance().ConnectAuth(strToken, strTokenSecret);
+						int interval = pref.getInt("interval", LoginSettings.DEFAULT_INTERVAL_INDEX);
+				        boolean isSoundEnabled = pref.getBoolean("sound", true);
+				        boolean isVibarationEnabled = pref.getBoolean("vibaration", true);
+				        TwitterManager.getInstance().setInterval(interval);
+				        TwitterManager.getInstance().setSound(isSoundEnabled);
+				        TwitterManager.getInstance().setVibration(isVibarationEnabled);
+		
+				        isUserAlreadySignedIn = true;
 			        }
-			        else
-			        {   
-			        	// Get Preferences
-			    		SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-			    		String strToken = pref.getString("token", "");
-			    		String strTokenSecret = pref.getString("tokensecret", "");
-			    		if(strToken != "" && strTokenSecret != ""){
-			    			TwitterManager.getInstance().ConnectAuth(strToken, strTokenSecret);
-							int interval = pref.getInt("interval", LoginSettings.DEFAULT_INTERVAL_INDEX);
-					        boolean isSoundEnabled = pref.getBoolean("sound", true);
-					        boolean isVibarationEnabled = pref.getBoolean("vibaration", true);
-					        TwitterManager.getInstance().setInterval(interval);
-					        TwitterManager.getInstance().setSound(isSoundEnabled);
-					        TwitterManager.getInstance().setVibration(isVibarationEnabled);
-			
-					        isUserAlreadySignedIn = true;
-				        }
-				    }
-			        
-			        if ( isUserAlreadySignedIn ){
-			        	// Open the messageList.
-			            Intent iMessagesList = new Intent(AndroChat.this, ContactList.class);
-			            startActivity(iMessagesList);
-			
-			        }
-			        else {
-			        	// Open the login and settings screen.
-			            Intent iLogin = new Intent(AndroChat.this, LoginSettings.class);
-			            startActivity(iLogin);
-			        }
-			
-			        finish();
-				}
-				catch (Exception ex){
-    				Editor e = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
-					e.remove("token");
-					e.remove("tokensecret");
-					e.commit();
-    			}
-				dialogStartingApplication.dismiss();
+			    }
 			}
-		}.start();
+    		catch (TwitterException ex)
+    		{
+    			tex = ex;
+    			bEx_TwitterException = true;
+    			isUserAlreadySignedIn = false;
+    		}
+			catch (Exception ex)
+			{
+				gex = ex;
+    			bEx_Exception = true;
+    			isUserAlreadySignedIn = false;
+			}
+    		
+    		return null;
+    	}
+    	
+    	@Override
+    	protected void onPostExecute(Void result) {
+    		
+			if (bEx_Exception == false && bEx_TwitterException == false)
+			{
+		        if ( isUserAlreadySignedIn ){
+		        	// Open the messageList.
+		        	Intent inContactList = new Intent(AndroChat.this, ContactList.class);
+		            startActivity(inContactList);
+		        }
+		        else
+		        {
+		        	// As default open the login and settings screen.
+		        	Intent inLogin = new Intent(AndroChat.this, LoginSettings.class);
+		            startActivity(inLogin);		        
+		        }
+			}
+			else
+			{	
+				Editor e = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+				e.remove("token");
+				e.remove("tokensecret");
+				e.commit();
+				
+	        	// As default open the login and settings screen.
+	        	Intent inLogin = new Intent(AndroChat.this, LoginSettings.class);
+	            startActivity(inLogin);
+			}
+
+    		if (this.dialogStartAndroChat.isShowing()) {
+				this.dialogStartAndroChat.dismiss();
+			}   
+	        finish(); 		
+    	}
     }
 
 }

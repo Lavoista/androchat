@@ -20,6 +20,7 @@ public class TwitterManager {
 	// Consts
 	public  final String USER_NAME = "UserName"; 
 	public  final String SCREEN_NAME = "ScreenName"; 
+	public  final String MESSAGE_SUCCESS = "MessageSuccess"; 
 	private static final String JTWITTER_OAUTH_KEY = "ZWSmAuCT1ycu3mItLAD4A";
 	private static final String JTWITTER_OAUTH_SECRET = "NQg05yLDD6mnLSaVHUatXwDSSO0MDbb590s9dTVb8z8";
 	private static final String JTWITTER_CALLBACK_URL = "androchat://twitt";
