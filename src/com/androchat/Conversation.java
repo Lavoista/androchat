@@ -278,8 +278,9 @@ public class Conversation extends Activity {
 			            	_tblMessages.addView(lineSepartor);
 			            }
 			        }
-//			        _scvMessageScroll.setSmoothScrollingEnabled(true);
-//			        _scvMessageScroll.scrollBy(0, conversionMsgs.size() * 30);
+			        
+			        //_scvMessageScroll.setSmoothScrollingEnabled(true);
+			        //_tblMessages.scrollTo(0, conversionMsgs.size() * 20);
 				}
 		        else
 		        {
@@ -340,44 +341,51 @@ public class Conversation extends Activity {
 						try
 						{
 							TwitterManager.getInstance().SendMessage(m_strScreenName, _txtConversationMessageBody.getText().toString());
-							bMsgSentSuccess = true;	
+							bMsgSentSuccess = true;
+							
+							if (bMsgSentSuccess)
+							{
+				        		new AlertDialog.Builder(Conversation.this)
+				        	      .setMessage(getString(R.string.message_send_success))
+				        	      .show();	
+				        		
+								Intent iContactList = new Intent(Conversation.this, ContactList.class);
+								iContactList.putExtra(TwitterManager.getInstance().MESSAGE_SUCCESS, m_strScreenName);
+								startActivity(iContactList);
+								finish();
+							}
+							else
+							{
+				        		new AlertDialog.Builder(Conversation.this)
+				        	      .setMessage("Message sending failed")
+				        	      .show();						
+							}
 						}
 						catch (TwitterException ex)
 						{
 			        		new AlertDialog.Builder(Conversation.this)
-			        	      .setMessage(R.string.error_common_prefix + " :\n" + ex.getMessage())
+			        	      .setMessage(getString(R.string.error_common_prefix) + " :\n" + ex.getMessage())
 			        	      .show();		
 						}
-						
-						if (bMsgSentSuccess)
-						{
-			        		new AlertDialog.Builder(Conversation.this)
-			        	      .setMessage(R.string.message_send_success)
-			        	      .show();	
-			        		
-							Intent iSettings = new Intent(Conversation.this, ContactList.class);
-							startActivity(iSettings);
-							finish();
-						}
-						else
-						{
-			        		new AlertDialog.Builder(Conversation.this)
-			        	      .setMessage(R.string.error_message_empty)
-			        	      .show();						
-						}
+					}
+					else
+					{
+		        		new AlertDialog.Builder(Conversation.this)
+		        	      .setMessage(getString(R.string.error_message_empty))
+		        	      .show();						
 					}
 				}
 				else
 				{
 	        		new AlertDialog.Builder(Conversation.this)
-	        	      .setMessage(R.string.error_message_too_long)
+	        	      .setMessage(getString(R.string.error_message_too_long))
 	        	      .show();
 				}
 			}
 			else
 			{
 	    		new AlertDialog.Builder(Conversation.this)
-	    	      .setMessage(R.string.error_choose_contact)
+	    	      .setMessage(getString(R.string.error_choose_contact))
 	    	      .show();
 			}
 		}

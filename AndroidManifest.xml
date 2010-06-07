@@ -6,6 +6,7 @@
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 	<uses-permission android:name="android.permission.WAKE_LOCK" />
 	<uses-permission android:name="android.permission.NOTIFICATION_SERVICE" />
+	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<permission android:name="com.androchat.privateservices"></permission>
 	<uses-permission android:name="com.androchat.privateservices"></uses-permission>
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
